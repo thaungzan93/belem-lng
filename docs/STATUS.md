@@ -21,15 +21,20 @@ The diagram does not use react-native-svg. That removes the old implementation's
 - Android build script/workflow syntax and verifier-logic checks: passed; these are not APK verification results.
 - Local build preflight now rejects a missing Java compiler or a runtime-only `JAVA_HOME` before native generation; negative checks and the full-JDK path passed.
 
-The browser script and fresh reports/screenshots are included in the downloadable checkpoint. Historical test counts from the lost implementation are not evidence for this rebuild. Actual Android generation/runtime and vessel-reference validation have not run.
+The browser script and fresh reports/screenshots are included in the downloadable checkpoint. Historical test counts from the lost implementation are not evidence for this rebuild. Android generation and static APK verification have now passed locally; Android runtime and vessel-reference validation have not run.
+
+## Local Android candidate
+
+The four-ABI standalone development-signed APK built successfully with JDK 17, Gradle 8.14.3 and SDK 36. It is 57,725,876 bytes, with SHA-256 `104dd591d787db45c03527059c5fceaf9bc8e7ebfd52be30e3729a54a2106c3f`. Package `com.belem.lng.rebuild`, version 0.4.0/code 1, minimum API 24 and target API 36 were checked against the APK. Signature, embedded Hermes bundle, ZIP integrity, blocked permissions and 16 KB native alignment checks passed. The build has no Internet permission.
+
+The initial successful build report records checkout `3246373` and a modified tree because Expo generated an `ios` npm script; that exact generated patch is retained with the report. Application source and dependencies were unchanged. The npm script is now intentionally retained to avoid that metadata rewrite in later builds. The subsequent Java-compiler preflight fix does not change the application bundle. Keep this local result separate from future GitHub build results. Native launch, record editing, persistence and responsiveness have not been exercised on a device.
 
 ## External blockers
 
-- The owner supplied `https://github.com/thaungzan93/belem-lng`; local `origin` points to that repository. GitHub authentication succeeds as `thaungzan93`, but both connector and CLI return HTTP 404 for the repository. The connector lists zero accessible repositories and zero installations/installed accounts for its GitHub app. No push or CI run is claimed. Complete the GitHub app installation/repository authorization, then verify visibility and permissions before pushing. HTTP 404 alone does not establish that a private repository is absent.
-- GitHub access was rechecked after the owner's setup confirmation: the account is correct, but the API still reports zero installations and HTTP 404 for the repository. See [GitHub setup](GITHUB.md) for the official installation page and diagnostic steps.
-- The official Android SDK components are installed locally. The first native attempt stopped because the preinstalled Java 21 was a runtime without `javac`; a full JDK 17 has now been installed for the retry. An APK has not been generated yet. This workspace has no `/dev/kvm`, so hardware-accelerated emulator testing is unavailable.
+- GitHub app access is now available for `thaungzan93/belem-lng`; visibility is private and the connection has push/admin permission. The remote contains an initial README commit, which must be preserved in the first source push. GitHub checks/builds are pending.
+- This workspace has no `/dev/kvm`, so hardware-accelerated emulator testing is unavailable. No physical Android device is connected.
 - Original reference PDFs, HMI exports, old source and old signing key remain unavailable.
 
 ## Next bounded checkpoint
 
-The executable source checkpoint is committed as `57cbc90`; subsequent access-status documentation does not change the tested application. Complete repository authorization, verify that the remote is private and inspect any existing commits, then push without overwriting remote work. Finish the local Android build attempt and retain its actual result; once repository access works, also run GitHub source checks and the manual Android workflow. Exercise Android flows before calling the build verified. Continue vessel-reference recovery and calibration using TASKS.md.
+Preserve the remote initial commit, push the working source, run GitHub source checks and the manual Android workflow, and publish a private candidate download with the source and verification evidence. Exercise Android flows before calling the build runtime-verified. Continue vessel-reference recovery and calibration using TASKS.md.

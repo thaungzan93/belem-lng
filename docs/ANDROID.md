@@ -27,6 +27,8 @@ bash scripts/build-android.sh
 
 The script replaces the ignored, generated `android/` directory using `expo prebuild --platform android --clean --no-install`. Keep application changes and configuration plugins in tracked source. The script refuses to overwrite a tracked Android project. It uses the generated Gradle wrapper rather than a separately installed Gradle. Initial builds download Gradle and Maven dependencies; later builds can reuse local caches.
 
+The template's `ios` npm script is retained so Expo prebuild does not rewrite package.json during an Android build. Its presence does not establish a tested iOS application.
+
 Outputs are written to the ignored `artifacts/android/` directory. The APK filename includes the version from `app.json`. Check integrity after copying or downloading:
 
 ```sh

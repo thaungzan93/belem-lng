@@ -14,7 +14,8 @@
     "test": "tsx --test tests/*.test.ts",
     "export:web": "expo export --platform web --output-dir dist/web",
     "build:android": "bash scripts/build-android.sh",
-    "verify:browser": "node scripts/verify-browser.mjs"
+    "verify:browser": "node scripts/verify-browser.mjs",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
