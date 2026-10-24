@@ -6,12 +6,20 @@ set -euo pipefail
 belem_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$belem_root"
 
-for belem_command in node npm java python3; do
+for belem_command in node npm java javac python3; do
   command -v "$belem_command" >/dev/null || {
     echo "Missing $belem_command. See docs/ANDROID.md." >&2
     exit 1
   }
 done
+if [[ -n "${JAVA_HOME:-}" && ! -x "$JAVA_HOME/bin/javac" ]]; then
+  echo 'JAVA_HOME must point to a full JDK with bin/javac, not a Java runtime. See docs/ANDROID.md.' >&2
+  exit 1
+fi
+javac -version >/dev/null 2>&1 || {
+  echo 'The Java compiler cannot run. Install a full JDK and check PATH/JAVA_HOME. See docs/ANDROID.md.' >&2
+  exit 1
+}
 [[ -f package-lock.json && -d node_modules/expo ]] || {
   echo 'Run npm ci before building.' >&2
   exit 1

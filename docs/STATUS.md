@@ -19,6 +19,7 @@ The diagram does not use react-native-svg. That removes the old implementation's
 - Static web export: passed.
 - 9 Chromium integration workflow groups: passed, no page errors; desktop and 412×915 phone viewports checked. Includes simulator/ESD, manual unknowns, record edits, failed-save recovery, real downloads, backups/reload and fit/zoom/pan.
 - Android build script/workflow syntax and verifier-logic checks: passed; these are not APK verification results.
+- Local build preflight now rejects a missing Java compiler or a runtime-only `JAVA_HOME` before native generation; negative checks and the full-JDK path passed.
 
 The browser script and fresh reports/screenshots are included in the downloadable checkpoint. Historical test counts from the lost implementation are not evidence for this rebuild. Actual Android generation/runtime and vessel-reference validation have not run.
 
@@ -26,7 +27,7 @@ The browser script and fresh reports/screenshots are included in the downloadabl
 
 - The owner supplied `https://github.com/thaungzan93/belem-lng`; local `origin` points to that repository. GitHub authentication succeeds as `thaungzan93`, but both connector and CLI return HTTP 404 for the repository. The connector lists zero accessible repositories and zero installations/installed accounts for its GitHub app. No push or CI run is claimed. Complete the GitHub app installation/repository authorization, then verify visibility and permissions before pushing. HTTP 404 alone does not establish that a private repository is absent.
 - GitHub access was rechecked after the owner's setup confirmation: the account is correct, but the API still reports zero installations and HTTP 404 for the repository. See [GitHub setup](GITHUB.md) for the official installation page and diagnostic steps.
-- A local Android SDK installation/build attempt is now in progress so candidate generation can proceed independently of GitHub. An APK has not been generated yet. This workspace has no `/dev/kvm`, so hardware-accelerated emulator testing is unavailable.
+- The official Android SDK components are installed locally. The first native attempt stopped because the preinstalled Java 21 was a runtime without `javac`; a full JDK 17 has now been installed for the retry. An APK has not been generated yet. This workspace has no `/dev/kvm`, so hardware-accelerated emulator testing is unavailable.
 - Original reference PDFs, HMI exports, old source and old signing key remain unavailable.
 
 ## Next bounded checkpoint

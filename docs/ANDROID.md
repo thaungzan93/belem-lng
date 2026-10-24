@@ -16,7 +16,7 @@ Workflow files being present does not establish a successful build. Until an act
 
 ## Build locally
 
-Use Node 22, JDK 17, Python 3 and an Android SDK. Install SDK platform 36, build-tools 36.0.0, NDK 27.1.12297006 and CMake 3.22.1 with Android Studio or `sdkmanager`, accept the SDK licenses, and set `ANDROID_HOME`. Keep the project on a normal writable filesystem with enough space for dependencies, native build outputs and Gradle caches.
+Use Node 22, a full JDK 17 including `javac`, Python 3 and an Android SDK. A Java runtime alone cannot compile the application. If `JAVA_HOME` is set, point it to that JDK and place its `bin` directory on `PATH`. Install SDK platform 36, build-tools 36.0.0, NDK 27.1.12297006 and CMake 3.22.1 with Android Studio or `sdkmanager`, accept the SDK licenses, and set `ANDROID_HOME`. Keep the project on a normal writable filesystem with enough space for dependencies, native build outputs and Gradle caches.
 
 ```sh
 npm ci
