@@ -13,7 +13,8 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 
 ## Repository and Android delivery
 
-- [ ] Create/authorize a private remote repository; creation was denied through the current connection.
+- [x] Receive the owner's repository URL and configure local origin: `https://github.com/thaungzan93/belem-lng`.
+- [ ] Complete GitHub app installation/repository authorization. Current connection lists no installations/accounts and cannot access the supplied repository.
 - [ ] Push the tested checkpoint and verify GitHub source checks.
 - [ ] Run the Android candidate workflow and verify the resulting APK report/artifact.
 - [ ] Exercise offline launch, simulator controls, saved-record Edit/Cancel/Save, force-stop/reopen and CSV/JSON sharing on Android.

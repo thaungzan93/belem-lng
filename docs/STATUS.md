@@ -24,10 +24,10 @@ The browser script and fresh reports/screenshots are included in the downloadabl
 
 ## External blockers
 
-- GitHub authentication succeeds as `thaungzan93`, but GitHub denied repository creation through the connected authorization. No remote repository or push is claimed. Create an empty private `belem-lng` repository and authorize its access; then this local project can be pushed and the workflows run.
+- The owner supplied `https://github.com/thaungzan93/belem-lng`; local `origin` points to that repository. GitHub authentication succeeds as `thaungzan93`, but both connector and CLI return HTTP 404 for the repository. The connector lists zero accessible repositories and zero installations/installed accounts for its GitHub app. No push or CI run is claimed. Complete the GitHub app installation/repository authorization, then verify visibility and permissions before pushing. HTTP 404 alone does not establish that a private repository is absent.
 - This workspace has no Android SDK. The manual GitHub Actions build is prepared, but an APK has not been generated here.
 - Original reference PDFs, HMI exports, old source and old signing key remain unavailable.
 
 ## Next bounded checkpoint
 
-This working source is ready for commit/export and for pushing once the private repository is authorized. Run the source-check workflow, then manually run the Android workflow and retain its actual APK/build report. Exercise the Android flows before calling the build verified. Continue vessel-reference recovery and calibration using TASKS.md.
+The executable source checkpoint is committed as `57cbc90`; subsequent access-status documentation does not change the tested application. Complete repository authorization, verify that the remote is private and inspect any existing commits, then push without overwriting remote work. Run source checks, manually run the Android workflow and retain its actual APK/build report. Exercise Android flows before calling the build verified. Continue vessel-reference recovery and calibration using TASKS.md.
