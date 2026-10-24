@@ -31,10 +31,10 @@ The initial successful build report records checkout `3246373` and a modified tr
 
 ## External blockers
 
-- GitHub app access is now available for `thaungzan93/belem-lng`; visibility is private and the connection has push/admin permission. The remote contains an initial README commit, which must be preserved in the first source push. GitHub checks/builds are pending.
+- Source is pushed to the private `thaungzan93/belem-lng` repository, preserving the owner's initial README commit. GitHub source checks are running. The first hosted Android run [40101646177](https://github.com/thaungzan93/belem-lng/actions/runs/40101646177) stopped during SDK setup because the setup action's default requested Google's retired `tools` package. The workflow now requests only `platform-tools` and the command-line tools version used successfully locally; a fresh hosted build is pending. That setup failure did not compile the app or produce an APK.
 - This workspace has no `/dev/kvm`, so hardware-accelerated emulator testing is unavailable. No physical Android device is connected.
 - Original reference PDFs, HMI exports, old source and old signing key remain unavailable.
 
 ## Next bounded checkpoint
 
-Preserve the remote initial commit, push the working source, run GitHub source checks and the manual Android workflow, and publish a private candidate download with the source and verification evidence. Exercise Android flows before calling the build runtime-verified. Continue vessel-reference recovery and calibration using TASKS.md.
+Finish GitHub source checks and the corrected manual Android workflow, and publish a private candidate download with the source and verification evidence. Exercise Android flows before calling the build runtime-verified. Continue vessel-reference recovery and calibration using TASKS.md.
