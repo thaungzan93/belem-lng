@@ -25,9 +25,10 @@ The browser script and fresh reports/screenshots are included in the downloadabl
 ## External blockers
 
 - The owner supplied `https://github.com/thaungzan93/belem-lng`; local `origin` points to that repository. GitHub authentication succeeds as `thaungzan93`, but both connector and CLI return HTTP 404 for the repository. The connector lists zero accessible repositories and zero installations/installed accounts for its GitHub app. No push or CI run is claimed. Complete the GitHub app installation/repository authorization, then verify visibility and permissions before pushing. HTTP 404 alone does not establish that a private repository is absent.
-- This workspace has no Android SDK. The manual GitHub Actions build is prepared, but an APK has not been generated here.
+- GitHub access was rechecked after the owner's setup confirmation: the account is correct, but the API still reports zero installations and HTTP 404 for the repository. See [GitHub setup](GITHUB.md) for the official installation page and diagnostic steps.
+- A local Android SDK installation/build attempt is now in progress so candidate generation can proceed independently of GitHub. An APK has not been generated yet. This workspace has no `/dev/kvm`, so hardware-accelerated emulator testing is unavailable.
 - Original reference PDFs, HMI exports, old source and old signing key remain unavailable.
 
 ## Next bounded checkpoint
 
-The executable source checkpoint is committed as `57cbc90`; subsequent access-status documentation does not change the tested application. Complete repository authorization, verify that the remote is private and inspect any existing commits, then push without overwriting remote work. Run source checks, manually run the Android workflow and retain its actual APK/build report. Exercise Android flows before calling the build verified. Continue vessel-reference recovery and calibration using TASKS.md.
+The executable source checkpoint is committed as `57cbc90`; subsequent access-status documentation does not change the tested application. Complete repository authorization, verify that the remote is private and inspect any existing commits, then push without overwriting remote work. Finish the local Android build attempt and retain its actual result; once repository access works, also run GitHub source checks and the manual Android workflow. Exercise Android flows before calling the build verified. Continue vessel-reference recovery and calibration using TASKS.md.

@@ -55,4 +55,6 @@ python3 -m http.server 8080 --directory dist/web
 
 Read [AGENTS.md](AGENTS.md) before coding. Assign one task and branch per contributor, review pull requests, and keep [STATUS](docs/STATUS.md) and [TASKS](docs/TASKS.md) current. End each session at a tested commit with a concrete next task and explicit blockers. GitHub does not automatically coordinate AI agents.
 
+For repository authorization and the first push, see [GitHub setup](docs/GITHUB.md).
+
 Do not commit signing keys, passwords, generated APKs/ZIPs or original private ship documents. Keep private references outside version control and retain document identity, revision, page and applicability when adding verified vessel data.

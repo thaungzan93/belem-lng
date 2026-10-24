@@ -17,6 +17,7 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 - [ ] Complete GitHub app installation/repository authorization. Current connection lists no installations/accounts and cannot access the supplied repository.
 - [ ] Push the tested checkpoint and verify GitHub source checks.
 - [ ] Run the Android candidate workflow and verify the resulting APK report/artifact.
+- [ ] Finish the local Android candidate build attempt independently of repository authorization, recording the actual toolchain and result.
 - [ ] Exercise offline launch, simulator controls, saved-record Edit/Cancel/Save, force-stop/reopen and CSV/JSON sharing on Android.
 - [ ] Check keyboard, rotation, phone/tablet readability, zoom/pan and sustained performance on physical ARM hardware.
 - [ ] Establish private release-signing storage before promising compatible future production updates. Current candidates are development signed and have a new app ID.
