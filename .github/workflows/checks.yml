@@ -1,0 +1,53 @@
+name: Source checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Engine and application tests
+        run: npm test
+      - name: Export the web application
+        run: npm run export:web
+      - name: Retain web preview files
+        uses: actions/upload-artifact@v4
+        with:
+          name: belem-web-${{ github.run_number }}
+          path: dist/web/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Install Chromium for browser verification
+        run: npx playwright install --with-deps chromium
+      - name: Verify desktop and phone browser workflows
+        run: npm run verify:browser
+      - name: Retain browser verification evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: belem-browser-${{ github.run_number }}
+          path: |
+            artifacts/browser-verification.json
+            artifacts/*.png
+          if-no-files-found: warn
+          retention-days: 14
