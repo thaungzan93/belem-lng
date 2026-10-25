@@ -1,0 +1,11 @@
+{
+  "startedAt": "2026-10-25T16:11:48.890000+00:00",
+  "emulatorVersion": "37.2.12",
+  "avd": "belem-recheck-api30",
+  "acceleration": "software; CPU lacks vmx/svm and /dev/kvm is absent",
+  "bootTimeoutSeconds": 300,
+  "booted": false,
+  "bootSeconds": 302.37,
+  "processExitCode": null,
+  "blocker": "Software emulator did not complete boot within bounded wait"
+}

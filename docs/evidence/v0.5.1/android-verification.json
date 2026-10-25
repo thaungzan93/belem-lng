@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "status": "static_checks_passed",
+  "releaseType": "development_signed_candidate",
+  "generatedAtUTC": "2026-10-25T16:25:35.107069+00:00",
+  "apk": "belem-lng-v0.5.1-candidate.apk",
+  "sha256": "0a1d238d2cf42b9e280301b9dce5149230bc6d0ac93321551c6163e2f51c2e59",
+  "bytes": 57757788,
+  "appVersion": "0.5.1",
+  "versionCode": 3,
+  "packageId": "com.belem.lng.rebuild",
+  "minSdk": 24,
+  "targetSdk": 36,
+  "sourceCommit": "b28b8a47b097b21f49f2bf1d557c7295e0c3a771",
+  "trackedSourceModifiedAfterCheckout": false,
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86",
+    "x86_64"
+  ],
+  "permissions": [
+    "android.permission.VIBRATE",
+    "com.belem.lng.rebuild.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+  ],
+  "signing": {
+    "type": "Expo template development key; not production signing",
+    "certificateSHA256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "previousAppCertificateContinuity": "Not established; previous signing key unavailable. Rebuild uses a separate package ID."
+  },
+  "checks": [
+    "Package, version and versionCode match app.json",
+    "Minimum API 24, target API 36 and launcher activity",
+    "APK is not debuggable and passes full ZIP CRC validation",
+    "APK signature verified with v2 signature scheme",
+    "Network, overlay, microphone, storage and configured blocked permissions absent",
+    "Hermes bytecode embedded at assets/index.android.bundle",
+    "All four Android ABIs include the Hermes native library",
+    "APK ZIP alignment verified for 16 KB pages",
+    "All 28 64-bit ELF libraries have 16 KB aligned LOAD segments"
+  ],
+  "aligned64BitLibraries": [
+    "lib/arm64-v8a/libappmodules.so",
+    "lib/arm64-v8a/libc++_shared.so",
+    "lib/arm64-v8a/libexpo-modules-core.so",
+    "lib/arm64-v8a/libfbjni.so",
+    "lib/arm64-v8a/libgifimage.so",
+    "lib/arm64-v8a/libhermes.so",
+    "lib/arm64-v8a/libhermestooling.so",
+    "lib/arm64-v8a/libimagepipeline.so",
+    "lib/arm64-v8a/libjsi.so",
+    "lib/arm64-v8a/libnative-filters.so",
+    "lib/arm64-v8a/libnative-imagetranscoder.so",
+    "lib/arm64-v8a/libreact_codegen_safeareacontext.so",
+    "lib/arm64-v8a/libreactnative.so",
+    "lib/arm64-v8a/libstatic-webp.so",
+    "lib/x86_64/libappmodules.so",
+    "lib/x86_64/libc++_shared.so",
+    "lib/x86_64/libexpo-modules-core.so",
+    "lib/x86_64/libfbjni.so",
+    "lib/x86_64/libgifimage.so",
+    "lib/x86_64/libhermes.so",
+    "lib/x86_64/libhermestooling.so",
+    "lib/x86_64/libimagepipeline.so",
+    "lib/x86_64/libjsi.so",
+    "lib/x86_64/libnative-filters.so",
+    "lib/x86_64/libnative-imagetranscoder.so",
+    "lib/x86_64/libreact_codegen_safeareacontext.so",
+    "lib/x86_64/libreactnative.so",
+    "lib/x86_64/libstatic-webp.so"
+  ],
+  "runtimeVerification": {
+    "status": "not_run",
+    "reason": "This build script performs static APK checks only. Install, offline launch, manual readings, Edit/Save/Cancel, persistence and device responsiveness require emulator/device testing."
+  }
+}

@@ -1,6 +1,8 @@
 # Android runtime QA plan
 
-**Every test below is NOT RUN for the 0.5.0 diagram candidate.** Static build, browser and publication results are recorded separately in [VERIFICATION.md](VERIFICATION.md). Change a result only after executing that test on the identified APK and retaining evidence. A checklist is not a passing test report.
+**Every test below is NOT RUN for the 0.5.1 patch candidate.** Static build, browser and publication results are recorded separately in [VERIFICATION.md](VERIFICATION.md). Change a result only after executing that test on the identified APK and retaining evidence. A checklist is not a passing test report.
+
+The 2026-10-25 software-emulator attempt was blocked before Android finished booting; no app interaction test occurred. See [the recheck report](RECHECK-2026-10-25.md).
 
 ## Session record
 
@@ -22,10 +24,10 @@ Use PASS, FAIL, BLOCKED or NOT RUN for each result. Record actual actions, expec
 
 ## Preparation
 
-1. Download the private candidate and verify SHA256SUMS.txt. Expected version 0.5 APK SHA-256 is `5b31441d02a255c5ecba1daa739ceca01528901f997d3682ae8a75b50bccec90`; the 0.4 digest is not the new diagram APK.
+1. Download the private candidate and verify SHA256SUMS.txt. Expected version 0.5.1 APK SHA-256 is `0a1d238d2cf42b9e280301b9dce5149230bc6d0ac93321551c6163e2f51c2e59`; earlier 0.4/0.5.0 digests do not identify this patched APK.
 2. Back up any existing rebuild watch records before an update. Do not uninstall the only copy to bypass a signing mismatch. Package `com.belem.lng.rebuild` is separate from the older app; no automatic data migration is expected.
 3. Use a representative ARM device first; record any additional API/ABI/device separately. A software emulator result does not establish physical-device performance.
-4. Install via Android's package installer or `adb install -r path/to/the-candidate.apk`. Keep Metro and Expo Go stopped. Confirm package 0.5.0 / code 2 before testing.
+4. Install via Android's package installer or `adb install -r path/to/the-candidate.apk`. Keep Metro and Expo Go stopped. Confirm package 0.5.1 / code 3 before testing.
 5. Store synthetic fixtures and redacted screenshots/logs outside tracked source. For each crash/ANR preserve the time, last action, screen recording and available adb logcat / system ANR trace. Do not clear evidence by rebooting first.
 
 Example diagnostic commands; choose the connected device explicitly when several are present:

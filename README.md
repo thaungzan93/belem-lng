@@ -1,10 +1,10 @@
 # Belem LNG Rebuild
 
-A new Android-first, offline React Native / Expo application for manual LNG watch records and a training fuel-system simulator. The rebuild started at version 0.4.0 as a new implementation because the earlier project and signing key could not be recovered. Version 0.5.0 reconstructs three source-style line-diagram panels and adds independent flow-blocking branches. The recovered H1843/FGSS topology and HMI photos inform those diagrams; numerical rates and thermodynamics remain training assumptions.
+A new Android-first, offline React Native / Expo application for manual LNG watch records and a training fuel-system simulator. The rebuild started at version 0.4.0 as a new implementation because the earlier project and signing key could not be recovered. Version 0.5.0 reconstructs three source-style line-diagram panels and adds independent flow-blocking branches. The recovered H1843/FGSS topology and HMI photos inform those diagrams; numerical rates and thermodynamics remain training assumptions. Version 0.5.1 fixes slow-save data loss and small-screen diagram access; the stage recheck passes 37 tests and 15 browser groups.
 
 This repository contains executable source and tests. It does not restore the earlier application's reported 37 operating cases, protection matrix, electrical model or source-instrument register. See [STATUS](docs/STATUS.md), [TASKS](docs/TASKS.md) and [MODEL](docs/MODEL.md) for implemented behavior and limits.
 
-Download the APK or the all-in-one project ZIP from the private [v0.5.0 candidate release](https://github.com/thaungzan93/belem-lng/releases/tag/v0.5.0-candidate.1). Sign in to GitHub with an account authorized for this repository. Source checks and APK static verification passed; Android device testing and vessel-reference validation remain pending.
+Download the APK or the all-in-one project ZIP from the private [v0.5.1 candidate release](https://github.com/thaungzan93/belem-lng/releases/tag/v0.5.1-candidate.1). Sign in to GitHub with an account authorized for this repository. Source checks and APK static verification passed; Android device testing and vessel-reference validation remain pending.
 
 ## Run
 

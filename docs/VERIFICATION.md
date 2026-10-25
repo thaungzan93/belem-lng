@@ -1,6 +1,6 @@
 # Verification records
 
-The 0.5.1 stage recheck and its fresh evidence are recorded in [RECHECK-2026-10-25.md](RECHECK-2026-10-25.md). Earlier APK identities below remain unchanged.
+The 0.5.1 stage recheck and its fresh evidence are recorded in [RECHECK-2026-10-25.md](RECHECK-2026-10-25.md). Both source CI and Android build/static checks passed at `b28b8a4`; downloaded APK identity, signature and alignment were rechecked. Native runtime remains blocked before emulator boot. Earlier APK identities below remain unchanged.
 
 ## Version 0.5 source-diagram candidate
 

@@ -1,6 +1,6 @@
 # Implementation map
 
-This describes the version 0.5.0 rebuild in this repository. Start with [STATUS.md](STATUS.md), [TASKS.md](TASKS.md) and [../AGENTS.md](../AGENTS.md) for the current checkpoint and contribution rules. Historical feature descriptions do not establish current behavior. [MODEL.md](MODEL.md) explains the training assumptions; [DATA.md](DATA.md) defines the manual log contract.
+This describes the version 0.5.1 rebuild in this repository. Start with [STATUS.md](STATUS.md), [TASKS.md](TASKS.md) and [../AGENTS.md](../AGENTS.md) for the current checkpoint and contribution rules. Historical feature descriptions do not establish current behavior. [MODEL.md](MODEL.md) explains the training assumptions; [DATA.md](DATA.md) defines the manual log contract.
 
 ## Code map
 
@@ -88,3 +88,5 @@ ESD immediately clears all equipment flags, including bunkering/vent. Boiloff co
 - The model omits mixture equilibrium, changing temperatures, full energy balance, real equipment curves and ship protective logic. Original references, source provenance and validation remain prerequisites for vessel-fidelity claims.
 
 Run the repository checks documented in [../README.md](../README.md) and record results against the exact commit. Current verification evidence and remaining native/reference blockers belong in STATUS/TASKS, rather than being inferred from this architecture description.
+
+The 0.5.1 App owns the watch write lock above the editor lifecycle. A synchronous ref prevents same-tick overlap; pending state disables navigation/modes and save readiness until storage acknowledges or rejects. The diagram page measures available height and supplies a bounded scrollable working area on small screens, while the inner diagram retains fit/zoom/pan.

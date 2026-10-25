@@ -94,3 +94,7 @@ JSON backup exports the current version-one book with indentation and exact stor
 `deliverFile` sanitizes filenames and creates a real browser Blob download. Native delivery writes UTF-8 files under the cache `watch-exports/` directory and invokes the system share sheet; unavailable sharing/cache or write errors are surfaced. A prepared export does not prove the user saved a durable external copy. Cache files are not an archival store. Browser integration checks cover downloads; native sharing requires a device check recorded in [STATUS.md](STATUS.md).
 
 See `tests/logbook.test.ts` for executable examples of UTC validation, duplicate rejection, snapshot replacement, tiny decimals, custom units and CSV escaping. Keep this contract synchronized with the decoder before changing persistence or adding external writers.
+
+## In-flight writes
+
+Version 0.5.1 locks watch mutations and screen/mode navigation at App level until storage acknowledges the write. This prevents reopening a fresh editor with a stale snapshot while another save is pending. Failure unlocks the UI while preserving saved data and the editor draft. It does not change the v1 schema.
