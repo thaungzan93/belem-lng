@@ -22,7 +22,7 @@ Use PASS, FAIL, BLOCKED or NOT RUN for each result. Record actual actions, expec
 
 ## Preparation
 
-1. Download the private candidate and verify SHA256SUMS.txt. Use the digest from the version 0.5 release/static report; the 0.4 digest is not the new diagram APK.
+1. Download the private candidate and verify SHA256SUMS.txt. Expected version 0.5 APK SHA-256 is `5b31441d02a255c5ecba1daa739ceca01528901f997d3682ae8a75b50bccec90`; the 0.4 digest is not the new diagram APK.
 2. Back up any existing rebuild watch records before an update. Do not uninstall the only copy to bypass a signing mismatch. Package `com.belem.lng.rebuild` is separate from the older app; no automatic data migration is expected.
 3. Use a representative ARM device first; record any additional API/ABI/device separately. A software emulator result does not establish physical-device performance.
 4. Install via Android's package installer or `adb install -r path/to/the-candidate.apk`. Keep Metro and Expo Go stopped. Confirm package 0.5.0 / code 2 before testing.

@@ -1,4 +1,10 @@
-# Verification record — retained 0.4 release
+# Verification records
+
+## Version 0.5 source-diagram candidate
+
+App source: `80061aacdd4312a23b635ea986febcee3309b4c9`. [Source/browser CI](https://github.com/thaungzan93/belem-lng/actions/runs/40184406782): 37 tests and 11 workflow groups passed. [Android CI](https://github.com/thaungzan93/belem-lng/actions/runs/40184414299): build and static APK checks passed with a clean tracked tree. Raw report: [android-verification.json](evidence/v0.5.0/android-verification.json). APK SHA-256: `5b31441d02a255c5ecba1daa739ceca01528901f997d3682ae8a75b50bccec90`, 57,757,208 bytes, versionCode 2. Download identity/CRC, signature and alignment were rechecked locally; the development certificate matches the earlier rebuild signer. Android runtime and commissioning validation remain NOT RUN. New photos/06.zip and source topology provenance are described in DIAGRAM_SOURCES.md and REFERENCE_UPLOADS.md.
+
+## Retained 0.4 release
 
 Version 0.5 diagram-change results are recorded in [STATUS.md](STATUS.md) and `docs/evidence/v0.5.0/`. The hashes/counts below intentionally remain pinned to the earlier 0.4 candidate.
 

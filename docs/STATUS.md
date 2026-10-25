@@ -20,7 +20,7 @@ See [DIAGRAM_SOURCES.md](DIAGRAM_SOURCES.md) for exact reviewed PDF pages, the r
 - **11** Chromium workflow groups: passed, no page errors, desktop 1500×1000 and phone 412×915.
 - Browser coverage includes source panels/tags, pump isolation and alternate flow, ESD/reset, manual unknowns, fit/zoom/pan, phone inspector accessibility and prior watch-edit/storage/export/restore flows.
 
-New browser evidence/screenshots are under `docs/evidence/v0.5.0/`. Source/static/browser evidence does not establish Android runtime performance. A version 0.5 APK build/publication is the next delivery step; do not substitute the older 0.4 APK as the diagram fix.
+New browser evidence/screenshots are under `docs/evidence/v0.5.0/`. Source/static/browser evidence does not establish Android runtime performance. [Source CI](https://github.com/thaungzan93/belem-lng/actions/runs/40184406782) and [Android build/static verification](https://github.com/thaungzan93/belem-lng/actions/runs/40184414299) passed for app commit `80061aacdd4312a23b635ea986febcee3309b4c9`. The downloaded APK archive/hash, signature and 16 KB ZIP alignment were independently rechecked. APK: 57,757,208 bytes, SHA-256 `5b31441d02a255c5ecba1daa739ceca01528901f997d3682ae8a75b50bccec90`; tracked CI source was clean. The development certificate matches the preceding rebuild candidate. Use the private [0.5.0 release](https://github.com/thaungzan93/belem-lng/releases/tag/v0.5.0-candidate.1) for the APK or all-in-one ZIP. Do not substitute the older 0.4 APK as the diagram fix.
 
 ## References and retained history
 
@@ -32,4 +32,4 @@ The old candidate.1 APK/source snapshot and 27-test/9-browser evidence are prese
 
 ## Next checkpoint
 
-Push the tested diagram change, run matching GitHub source/Android checks and deliver the version 0.5 candidate. Then execute [NATIVE_QA.md](NATIVE_QA.md) on representative Android hardware, including new route isolation and diagram gestures. Continue source review/calibration one operating case at a time. Do not call the app source-exact or runtime-verified from these checks alone.
+The diagram source, references and evidence are pushed to GitHub; candidate publication uses the repository workflow. Execute [NATIVE_QA.md](NATIVE_QA.md) on representative Android hardware, including new route isolation and diagram gestures. Continue source review/calibration one operating case at a time. Do not call the app source-exact or runtime-verified from these checks alone.
