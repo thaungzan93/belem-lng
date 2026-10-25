@@ -76,8 +76,8 @@ checkpoint = {
     'sourceChecksRun': args.checks_run, 'androidBuildRun': args.android_run,
     'apk': {'file': native['apk'], 'sha256': native['sha256'], 'bytes': native['bytes']},
     'androidRuntimeVerification': native['runtimeVerification'],
-    'scope': 'Version 0.4.0 offline manual watch log and training simulator rebuild; vessel-reference fidelity remains pending.',
-    'excludes': ['node_modules', 'Android SDK', 'signing keys', 'original private ship reference files'],
+    'scope': f'Version {version} offline manual watch log, source-style line diagrams and connected training simulator; complete vessel calibration remains pending.',
+    'excludes': ['node_modules', 'Android SDK', 'private signing keys', 'large mixed GTT/H1843 reference bundle, retained in the private reference release'],
 }
 checkpoint_path = out / f'{prefix}-checkpoint.json'
 checkpoint_path.write_text(json.dumps(checkpoint, indent=2) + '\n')
@@ -117,10 +117,13 @@ Static checks passed. Native launch, Edit/Cancel/Save, force-stop/reopen, sharin
 device responsiveness still require Android device testing. Back up watch records.
 
 MODEL AND REFERENCES
-This is the v0.4.0 rebuild with manual observations and a training simulator.
-Original source PDFs/HMI archives and the previous signing key are not included.
-Ship-specific diagram fidelity, commissioned settings and model calibration remain
-pending. Consult docs/MODEL.md and do not interpret training values as vessel limits.
+This is the v{version} rebuild with manual observations and a training simulator.
+The source snapshot includes the six original HMI photographs and owner-supplied
+06.zip bunkering records. The large mixed GTT/H1843 source bundle is retained in
+the separate private reference release linked from docs/REFERENCES.md.
+The previous app source and signing key are unavailable. Exact vendor-HMI fidelity,
+commissioned settings and model calibration remain pending. Consult docs/MODEL.md
+and docs/DIAGRAM_SOURCES.md; training values are not vessel limits.
 '''
 members = {source.name: source.read_bytes(), bundle.name: bundle.read_bytes(),
            web_zip.name: web_zip.read_bytes(), checkpoint_path.name: checkpoint_path.read_bytes(),
