@@ -14,6 +14,10 @@ The native workflow runs only when manually requested. It uses GitHub-hosted Ubu
 
 Workflow files being present does not establish a successful build. Until an actual run finishes, APK generation and its static checks remain unverified. A successful build alone also does not establish working Android controls or acceptable device performance.
 
+## Publish the private candidate
+
+The manual **Publish private candidate** workflow packages already successful source/browser and Android runs. Enter their run IDs and an existing candidate tag. It checks that the runs passed for the same source, that packaged application files still match the APK build, and that the repository is private. It then builds the all-in-one ZIP and publishes the draft candidate with the ZIP, direct APK and checksums using the repository's Actions token. Generated downloads stay outside Git history. The standalone packaging command is `python3 scripts/package-candidate.py --help`.
+
 ## Build locally
 
 Use Node 22, a full JDK 17 including `javac`, Python 3 and an Android SDK. A Java runtime alone cannot compile the application. If `JAVA_HOME` is set, point it to that JDK and place its `bin` directory on `PATH`. Install SDK platform 36, build-tools 36.0.0, NDK 27.1.12297006 and CMake 3.22.1 with Android Studio or `sdkmanager`, accept the SDK licenses, and set `ANDROID_HOME`. Keep the project on a normal writable filesystem with enough space for dependencies, native build outputs and Gradle caches.

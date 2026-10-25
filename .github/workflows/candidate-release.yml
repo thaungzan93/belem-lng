@@ -1,0 +1,175 @@
+name: Publish private candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Successful Source checks run containing web and browser artifacts
+        required: true
+        type: string
+        default: '40101777969'
+      android_run_id:
+        description: Successful Android candidate APK run
+        required: true
+        type: string
+        default: '40101785824'
+      release_tag:
+        description: Existing draft prerelease tag for this app version
+        required: true
+        type: string
+        default: v0.4.0-candidate.1
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: candidate-release-${{ inputs.release_tag }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Validate runs, artifacts and existing draft prerelease
+        id: inputs
+        env:
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          ANDROID_RUN_ID: ${{ inputs.android_run_id }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import os
+          import re
+          import subprocess
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          source_id = os.environ['SOURCE_RUN_ID']
+          android_id = os.environ['ANDROID_RUN_ID']
+          tag = os.environ['RELEASE_TAG']
+          assert re.fullmatch(r'[1-9][0-9]*', source_id), 'Source run ID must be numeric'
+          assert re.fullmatch(r'[1-9][0-9]*', android_id), 'Android run ID must be numeric'
+          version = json.loads(Path('app.json').read_text())['expo']['version']
+          assert re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version), 'Unsupported app version'
+          assert re.fullmatch(r'v' + re.escape(version) + r'-candidate\.[1-9][0-9]*', tag), 'Tag must be a candidate for the current app version'
+
+          def api(path):
+              return json.loads(subprocess.check_output(['gh', 'api', path], text=True))
+
+          metadata = api(f'repos/{repository}')
+          assert metadata['full_name'].lower() == repository.lower() and metadata['private'] is True, 'A private repository is required'
+
+          def verified_run(run_id, workflow):
+              run = api(f'repos/{repository}/actions/runs/{run_id}')
+              assert str(run['id']) == run_id, 'Unexpected workflow run ID'
+              assert run['repository']['full_name'].lower() == repository.lower(), 'Run belongs to another repository'
+              assert run['head_repository']['full_name'].lower() == repository.lower(), 'Fork runs are not accepted'
+              assert run['path'].split('@', 1)[0] == workflow, 'Unexpected workflow'
+              assert run['status'] == 'completed' and run['conclusion'] == 'success', 'Run must have completed successfully'
+              assert re.fullmatch(r'[0-9a-f]{40}', run['head_sha']), 'Invalid run source SHA'
+              assert isinstance(run['run_number'], int) and run['run_number'] > 0
+              return run
+
+          source = verified_run(source_id, '.github/workflows/checks.yml')
+          android = verified_run(android_id, '.github/workflows/android.yml')
+          assert source['head_sha'] == android['head_sha'], 'Source and Android runs must use the same commit'
+          build_sha = android['head_sha']
+          subprocess.run(['git', 'merge-base', '--is-ancestor', build_sha, 'HEAD'], check=True)
+          tag_sha = subprocess.check_output(['git', 'rev-parse', '--verify', tag + '^{commit}'], text=True).strip()
+          assert tag_sha == build_sha, 'Release tag must point to the Android build commit'
+          release = json.loads(subprocess.check_output(['gh', 'release', 'view', tag, '--repo', repository, '--json', 'isDraft,isPrerelease,tagName'], text=True))
+          assert release['tagName'] == tag and release['isDraft'] is True and release['isPrerelease'] is True, 'An existing draft prerelease is required'
+
+          def artifact_name(run, name):
+              artifacts = api(f"repos/{repository}/actions/runs/{run['id']}/artifacts?per_page=100")
+              assert artifacts['total_count'] <= 100, 'Unexpected artifact count'
+              matches = [a for a in artifacts['artifacts'] if a['name'] == name]
+              assert len(matches) == 1 and not matches[0]['expired'], 'Expected artifact is missing, expired or ambiguous'
+              return name
+
+          outputs = {
+              'source_run_id': source_id,
+              'android_run_id': android_id,
+              'web_artifact': artifact_name(source, f"belem-web-{source['run_number']}"),
+              'browser_artifact': artifact_name(source, f"belem-browser-{source['run_number']}"),
+              'android_artifact': artifact_name(android, f"belem-android-candidate-{android['run_number']}"),
+              'checks_url': f'https://github.com/{repository}/actions/runs/{source_id}',
+              'android_url': f'https://github.com/{repository}/actions/runs/{android_id}',
+              'build_sha': build_sha,
+              'release_tag': tag,
+              'version': version,
+          }
+          with Path(os.environ['GITHUB_OUTPUT']).open('a') as output:
+              output.write(''.join(f'{key}={value}\n' for key, value in outputs.items()))
+          print(f'Validated successful runs at {build_sha} and existing draft prerelease {tag}.')
+          PY
+      - name: Download verified web artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.inputs.outputs.web_artifact }}
+          path: artifacts/release-web
+          run-id: ${{ steps.inputs.outputs.source_run_id }}
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+      - name: Download verified browser evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.inputs.outputs.browser_artifact }}
+          path: artifacts/release-browser
+          run-id: ${{ steps.inputs.outputs.source_run_id }}
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+      - name: Download verified Android artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.inputs.outputs.android_artifact }}
+          path: artifacts/release-android
+          run-id: ${{ steps.inputs.outputs.android_run_id }}
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+      - name: Package source, history, APK and evidence
+        env:
+          CHECKS_RUN_URL: ${{ steps.inputs.outputs.checks_url }}
+          ANDROID_RUN_URL: ${{ steps.inputs.outputs.android_url }}
+        run: |
+          python scripts/package-candidate.py \
+            --android-dir artifacts/release-android \
+            --web-dir artifacts/release-web \
+            --browser-dir artifacts/release-browser \
+            --checks-run "$CHECKS_RUN_URL" \
+            --android-run "$ANDROID_RUN_URL" \
+            --output-dir artifacts/deliverables
+          (cd artifacts/deliverables && sha256sum -c SHA256SUMS.txt)
+      - name: Attach files and publish the existing private prerelease
+        env:
+          RELEASE_TAG: ${{ steps.inputs.outputs.release_tag }}
+          APP_VERSION: ${{ steps.inputs.outputs.version }}
+          BUILD_SOURCE_SHA: ${{ steps.inputs.outputs.build_sha }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          tag = os.environ['RELEASE_TAG']
+          release = json.loads(subprocess.check_output(['gh', 'release', 'view', tag, '--repo', os.environ['GITHUB_REPOSITORY'], '--json', 'isDraft,isPrerelease,tagName'], text=True))
+          assert release['tagName'] == tag and release['isDraft'] is True and release['isPrerelease'] is True, 'Refusing to replace a published or non-candidate release'
+          actual = subprocess.check_output(['git', 'rev-parse', '--verify', tag + '^{commit}'], text=True).strip()
+          assert actual == os.environ['BUILD_SOURCE_SHA'], 'Release tag no longer matches the verified build source'
+          PY
+          gh release upload "$RELEASE_TAG" \
+            "artifacts/deliverables/belem-lng-v${APP_VERSION}-all.zip" \
+            "artifacts/deliverables/belem-lng-v${APP_VERSION}-candidate.apk" \
+            artifacts/deliverables/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" --clobber
+          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft=false --prerelease
