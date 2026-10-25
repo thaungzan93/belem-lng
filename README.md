@@ -4,6 +4,8 @@ A new Android-first, offline React Native / Expo application for manual LNG watc
 
 This repository contains executable source and tests. It does not restore the earlier application's reported 37 operating cases, protection matrix, electrical model or source-instrument register. See [STATUS](docs/STATUS.md), [TASKS](docs/TASKS.md) and [MODEL](docs/MODEL.md) for implemented behavior and limits.
 
+Download the APK or the all-in-one project ZIP from the private [v0.4.0 candidate release](https://github.com/thaungzan93/belem-lng/releases/tag/v0.4.0-candidate.1). Sign in to GitHub with an account authorized for this repository. Source checks and APK static verification passed; Android device testing and vessel-reference validation remain pending.
+
 ## Run
 
 Use Node 22, or a supported version at least 20.19.4.
