@@ -1,0 +1,11 @@
+{
+  "scope": "Training circuit randomized command/step check; not vessel or native-runtime validation",
+  "seed": 87263,
+  "iterations": 2500,
+  "simulatedSeconds": 112818,
+  "maximumMassResidualKg": 0.0000018362552509643137,
+  "esdCycles": 28,
+  "nonnegativeFinite": true,
+  "esdTransferBlocked": true,
+  "resetRemainsStopped": true
+}

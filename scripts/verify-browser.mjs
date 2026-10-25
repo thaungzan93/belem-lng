@@ -93,10 +93,77 @@ try{
  const history={version:1,entries:Array.from({length:23},(_,index)=>({id:`imported-${index}`,timestamp:new Date(Date.parse('2026-10-23T23:00:00Z')-index*3600000).toISOString(),source:'manual',notes:`Older observation ${index}`,readings:index===20?{instrumentValues:{UNITLESS:0,TINYVALUE:1e-7},instrumentUnits:{TINYVALUE:'kPa'}}:{tankVolumeM3:100+index}}))};await field('Backup JSON').fill(JSON.stringify(history));await click('Merge backup');await text('Backup merged with this device logbook.').waitFor();const many=await book();assert.equal(many.entries.length,25);assert.equal(await page.getByTestId('open-record-imported-20').count(),0);await click('Show older records');await editRecord('imported-20');assert.equal(await field('Record unit UNITLESS').inputValue(),'');assert.equal(await field('Record reading TINYVALUE').inputValue(),'0.0000001');await field('Record notes').fill('Edited older observation');await click('Save changes');await text('Record updated on this device.').waitFor();const older=(await book()).entries.find(entry=>entry.id==='imported-20');assert.deepEqual(older.readings,history.entries[20].readings);await click('Close record');
  checks.push('Observations survive reload, older-record pagination remains editable, and notes-only edits preserve tiny values and originally absent units');
 
+ // Browser storage is synchronous. Defer its promise acknowledgment to exercise
+ // the pending native-storage interval without adding a production test hook.
+ const beforeDelayedSave=await book(),delayedNotes='Delayed native-style storage acknowledgement';
+ await field('Observation time (UTC)').fill('2026-10-25T09:00:00Z');await field('Tank liquid volume').fill('333');await field('Watch notes').fill(delayedNotes);
+ await page.evaluate(storageKey=>{
+  const state={Promise:window.Promise,setItem:Storage.prototype.setItem,arm:true,capture:false,write:null,pending:null};window.__belemDelayedStorage=state;
+  Storage.prototype.setItem=function(k,v){if(k===storageKey&&state.arm){state.arm=false;state.capture=true;state.write={k,v};return;}return state.setItem.call(this,k,v);};
+  window.Promise=class extends state.Promise{constructor(executor){super((resolve,reject)=>executor(value=>{if(state.capture){state.capture=false;state.pending={resolve:()=>{try{state.setItem.call(localStorage,state.write.k,state.write.v);resolve(value);}catch(error){reject(error);}},reject:()=>reject(new Error('Injected delayed watch-storage failure'))};}else resolve(value);},reject));}};
+ },key);
+ try{
+  await click('Save reading');await button('Saving…').waitFor();
+  for(const name of ['Simulator','Manual observations','Fuel diagram','Watch log','Model and status'])assert.equal(await button(name).isDisabled(),true,`${name} cannot unmount an unacknowledged watch write`);
+  for(const name of ['Export CSV','Backup JSON','Merge backup'])assert.equal(await button(name).isDisabled(),true,`${name} cannot overlap a pending write`);
+  assert.equal(await field('Tank liquid volume').isEditable(),false);assert.deepEqual(await book(),beforeDelayedSave);
+  // Dispatch bypasses Playwright's enabled-state wait and attempts the original
+  // navigation/second-write route while the save acknowledgment is held.
+  await button('Fuel diagram').evaluate(element=>element.click());await button('Saving…').evaluate(element=>element.click());
+  assert.equal(await field('Watch notes').inputValue(),delayedNotes);assert.deepEqual(await book(),beforeDelayedSave);
+  await page.evaluate(()=>window.__belemDelayedStorage.pending.reject());await page.getByRole('alert').filter({hasText:'Injected delayed watch-storage failure'}).waitFor();
+  assert.deepEqual(await book(),beforeDelayedSave);assert.equal(await field('Tank liquid volume').inputValue(),'333');assert.equal(await field('Watch notes').inputValue(),delayedNotes);
+  for(const name of ['Simulator','Manual observations','Fuel diagram','Watch log','Model and status'])assert.equal(await button(name).isEnabled(),true,`${name} unlocks after a failed write`);
+  await page.evaluate(()=>{window.__belemDelayedStorage.arm=true;});await click('Save reading');await button('Saving…').waitFor();assert.deepEqual(await book(),beforeDelayedSave);
+  await page.evaluate(()=>window.__belemDelayedStorage.pending.resolve());await text('Reading saved on this device.').waitFor();
+  const afterDelayedSave=await book();assert.equal(afterDelayedSave.entries.length,beforeDelayedSave.entries.length+1);assert.equal(afterDelayedSave.entries[0].notes,delayedNotes);assert.deepEqual(afterDelayedSave.entries.slice(1),beforeDelayedSave.entries);assert.equal(await button('Fuel diagram').isEnabled(),true);
+ }finally{await page.evaluate(()=>{const state=window.__belemDelayedStorage;Storage.prototype.setItem=state.setItem;window.Promise=state.Promise;delete window.__belemDelayedStorage;});}
+ checks.push('Delayed storage writes lock navigation and all other mutations; failure preserves the draft and saved data, and retry commits exactly one observation before unlocking');
+
  await page.setViewportSize({width:412,height:915});await click('Fuel diagram');await canvasFits();await page.screenshot({path:'artifacts/diagram-phone.png'});await openInspector('45PS1001');await inspectorFits();await click('Close inspector');await click('Zoom in');await click('Zoom in');await click('Zoom in');const beforePan=await canvas().boundingBox(),viewport=await page.getByTestId('diagram-viewport').boundingBox();assert.ok(beforePan.width>viewport.width,'Zoom enlarges the canvas beyond its viewport');await page.mouse.move(viewport.x+viewport.width/2,viewport.y+viewport.height/2);await page.mouse.wheel(100,0);await page.waitForFunction(left=>Math.abs(document.querySelector('[data-testid="ship-diagram-canvas"]').getBoundingClientRect().left-left)>5,beforePan.x);await canvasFits();
  await click('Watch log');await editRecord(id);await page.waitForTimeout(400);await modalFits();await page.screenshot({path:'artifacts/watch-edit-phone.png'});await click('Cancel editing');await click('Close record');
  checks.push('Phone diagram fits its fixed aspect ratio, zoom and horizontal trackpad/wheel pan work, and record modal inputs/Close/Save/Cancel fit the phone viewport');
 
- assert.deepEqual(pageErrors,[]);const app=JSON.parse(await readFile('app.json','utf8'));const report={passed:true,version:app.expo.version,checkedAt:new Date().toISOString(),scope:'Chromium browser integration: desktop 1500×1000 and phone viewport 412×915. No native Android, hardware or vessel-reference validation is implied.',checks,pageErrors,screenshots};await writeFile('artifacts/browser-verification.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+
+ // Small portrait and short landscape windows must retain a real diagram area.
+ await click('Simulator');await click('Fuel diagram');
+ for(const size of [{width:360,height:640},{width:915,height:412},{width:768,height:1024},{width:1280,height:800}]){
+  await page.setViewportSize(size);
+  for(const pane of ['fuel','bunkering','igpr']){
+   await selectPane(pane);const view=page.getByTestId('diagram-viewport');await view.scrollIntoViewIfNeeded();
+   const bounds=await view.boundingBox();assert.ok(bounds.height>=120,'Diagram viewport cannot collapse on small screens');
+   await openInspector(pane==='bunkering'?'45HV7401':pane==='igpr'?'45HV6503':'45PS1001');await inspectorFits();await click('Close inspector');
+  }
+  for(const name of ['Activate emergency shutdown','Step 1 minute','Start fuel supply']){
+   await button(name).scrollIntoViewIfNeeded();const bounds=await button(name).boundingBox();assert.ok(bounds.y>=-1&&bounds.y+bounds.height<=size.height+1,`${name} remains reachable at ${size.width}x${size.height}`);
+  }
+ }
+ await page.setViewportSize({width:360,height:640});await selectPane('fuel');await page.getByTestId('diagram-viewport').scrollIntoViewIfNeeded();await page.screenshot({path:'artifacts/diagram-small-phone.png'});screenshots.push('diagram-small-phone.png');
+ checks.push('Small portrait, landscape rotation and tablet layouts keep a noncollapsed diagram, readable inspectors and scroll-reachable shutdown/step/supply controls');
+
+ await page.setViewportSize({width:1500,height:1000});await click('Model and status');
+ await field('Training consumer demand').fill('-1');await click('Apply training settings');await page.getByRole('alert').filter({hasText:'Invalid demandKgh'}).waitFor();
+ for(const [name,value] of [['Training heat ingress','0'],['Training consumer demand','900'],['Training pump flow','4'],['Training bunker flow','25']])await field(name).fill(value);
+ await click('Apply training settings');await page.getByText(/Training settings updated/).first().waitFor();assert.equal(await page.getByRole('alert').count(),0);
+ await click('Fuel diagram');await click('Start fuel supply');await click('Step 1 minute');assert.ok(number(await readout('Gas delivery'))>0&&number(await readout('Gas delivery'))<=900);await click('Step 1 minute');assert.equal(number(await readout('Gas delivery')),900);
+ await click('Model and status');await click('Reset training plant');assert.equal(await field('Training consumer demand').inputValue(),'500');assert.equal(await field('Training heat ingress').inputValue(),'40');
+ await click('Fuel diagram');await page.getByText(/Simulated 0.0 min/).waitFor();await click('Run 10×');await page.getByText(/Simulated 0.2 min/).waitFor();await click('Pause simulation');
+ const elapsed=()=>page.getByText(/^Simulated /).innerText();const paused=await elapsed();await page.waitForTimeout(1150);assert.equal(await elapsed(),paused,'Pause stops the clock');
+ await click('Run 10×');await click('Watch log');await page.waitForTimeout(1150);await click('Fuel diagram');const navigated=await elapsed();await page.waitForTimeout(1150);assert.equal(await elapsed(),navigated,'Navigation stops the clock');
+ await click('Manual observations');await click('Model and status');for(const name of ['Apply training settings','Reset training plant'])assert.equal(await button(name).isDisabled(),true);assert.equal(await field('Training consumer demand').isEditable(),false);await click('Simulator');
+ checks.push('Training settings validate ranges and change delivery, reset restores defaults, Pause/navigation stop the simulation clock, and manual mode prevents configuration changes');
+
+ const recovery=await browser.newPage({viewport:{width:412,height:915}});recovery.on('pageerror',error=>pageErrors.push(error.message));
+ try{
+  await recovery.goto(preview.url);await recovery.evaluate(storageKey=>localStorage.setItem(storageKey,'{unreadable watch backup'),key);await recovery.reload();
+  await recovery.getByRole('alert').filter({hasText:'Existing data has not been overwritten'}).waitFor();assert.equal(await recovery.evaluate(storageKey=>localStorage.getItem(storageKey),key),'{unreadable watch backup');
+  const pending=recovery.waitForEvent('download');await recovery.getByRole('button',{name:'Export unread backup',exact:true}).click();assert.equal(await readFile(await (await pending).path(),'utf8'),'{unreadable watch backup');
+  await recovery.getByRole('button',{name:'Watch log',exact:true}).click();assert.equal(await recovery.getByRole('button',{name:'Save reading',exact:true}).isDisabled(),true);
+  await recovery.evaluate(storageKey=>localStorage.setItem(storageKey,JSON.stringify({version:1,entries:[]})),key);await recovery.getByRole('button',{name:'Retry watch storage',exact:true}).click();
+  await recovery.getByRole('button',{name:'Save reading',exact:true}).waitFor();await expect(recovery.getByRole('button',{name:'Save reading',exact:true})).toBeEnabled();assert.equal(await recovery.getByRole('alert').count(),0);
+ }finally{await recovery.close();}
+ checks.push('Unreadable watch storage is never overwritten; original bytes can be exported and a corrected backup can be reopened through Retry');
+
+ assert.deepEqual(pageErrors,[]);const app=JSON.parse(await readFile('app.json','utf8'));const report={passed:true,version:app.expo.version,checkedAt:new Date().toISOString(),scope:'Chromium browser integration: desktop 1500×1000, phones 412×915 and 360×640, landscape 915×412, tablet 768×1024 and desktop 1280×800. No native Android, hardware or vessel-reference validation is implied.',checks,pageErrors,screenshots};await writeFile('artifacts/browser-verification.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
 }catch(error){await writeFile('artifacts/browser-verification.json',JSON.stringify({passed:false,checks,pageErrors,error:String(error)},null,2));await page.screenshot({path:'artifacts/browser-failure.png'}).catch(()=>{});throw error;}
 finally{await browser.close();await preview.close();}

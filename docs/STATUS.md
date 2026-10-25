@@ -1,5 +1,9 @@
 # Current checkpoint
 
+Current source is **0.5.1 / Android code 3**. The stage recheck fixed a watch-write/navigation data-loss race, small-screen diagram collapse and inherited-name setting validation. Locked install, TypeScript, all **37** tests, web export and **15** browser groups passed locally. The browser set now covers six desktop/phone/landscape/tablet sizes, delayed write failure/retry, settings/timer behavior and unreadable-storage recovery. Native build/publication for this patch is being checked separately; the 0.5.0 APK below predates these fixes. See [the recheck record](RECHECK-2026-10-25.md).
+
+## Retained 0.5.0 diagram checkpoint
+
 Version **0.5.0**, Android code **2**, package `com.belem.lng.rebuild`. This continues the new implementation introduced at 0.4.0; it is not recovered 0.3.x source.
 
 ## Diagram fix

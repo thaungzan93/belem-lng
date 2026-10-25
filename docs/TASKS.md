@@ -11,6 +11,8 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 - [x] Three source-style scalable native panels, source-tagged inspectors and independent flow-blocking pump/compressor/vaporizer/bunker route controls; manual actuation disabled.
 - [x] Source/web CI and manual offline Android-candidate build automation.
 
+- [x] Stage recheck: protect watch saves across asynchronous storage acknowledgements, preserve diagram space and scroll access on small/landscape screens, and reject inherited-name settings; 37 tests and 15 browser workflow groups pass locally.
+
 ## Repository and Android delivery
 
 - [x] Receive the owner's repository URL and configure local origin: `https://github.com/thaungzan93/belem-lng`.

@@ -46,5 +46,10 @@ test('invalid configuration and commands fail before changing the original state
   const s=createPlant(),snapshot=JSON.stringify(s);
   for(const seconds of [0,-1,Infinity,NaN,86401])assert.throws(()=>advancePlant(s,seconds));
   for(const values of [{densityKgM3:0},{demandKgh:NaN},{capacityM3:10},{bufferVolumeM3:-1},{liquidTemperatureC:-273.15},{unknown:1}])assert.throws(()=>commandPlant(s,{type:'settings',values:values as Partial<PlantConfig>}));
+  for(const key of ['constructor','toString','hasOwnProperty','__proto__']){
+    const values=JSON.parse(`{"${key}":123}`) as Partial<PlantConfig>;
+    assert.throws(()=>commandPlant(s,{type:'settings',values}),/Unknown training setting/);
+    assert.throws(()=>advancePlant({...s,cfg:{...s.cfg,...values}},1),/Unknown training setting/);
+  }
   assert.throws(()=>commandPlant(s,{type:'toggle',equipment:'unknown' as EquipmentKey}));assert.equal(JSON.stringify(s),snapshot);
 });

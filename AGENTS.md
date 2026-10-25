@@ -1,6 +1,6 @@
 # Shared contributor instructions
 
-This repository is a new implementation, version 0.5.0. The original app code and signing key were not recovered; reference recovery is tracked separately below. Historical notes do not establish implemented features or current passing checks.
+This repository is a new implementation, version 0.5.1. The original app code and signing key were not recovered; reference recovery is tracked separately below. Historical notes do not establish implemented features or current passing checks.
 
 Read [docs/HANDOVER.md](docs/HANDOVER.md), [docs/STATUS.md](docs/STATUS.md) and [docs/TASKS.md](docs/TASKS.md) first. Reference recovery changed on 2026-10-25: the owner's Drive bundle was retrieved, including H1843/FGSS PDFs. Consult [docs/REFERENCES.md](docs/REFERENCES.md) and its manifest before assuming sources are missing or parameters are verified. The six HMI photo originals and 06.zip were re-uploaded and archived for the diagram fix; see docs/REFERENCE_UPLOADS.md. The old application source/signing key and editable digital HMI project remain unavailable.
 

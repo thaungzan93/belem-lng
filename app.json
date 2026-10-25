@@ -2,13 +2,13 @@
   "expo": {
     "name": "Belem LNG Rebuild",
     "slug": "belem-lng",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "orientation": "default",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "android": {
       "package": "com.belem.lng.rebuild",
-      "versionCode": 2,
+      "versionCode": 3,
       "blockedPermissions": [
         "android.permission.INTERNET",
         "android.permission.SYSTEM_ALERT_WINDOW",

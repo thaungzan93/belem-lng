@@ -10,7 +10,7 @@ The owner wants Codex, Antigravity and other AI tools to share the same GitHub p
 
 ## Essential distinction
 
-The runnable application is **version 0.5.0, a rebuild**. The old source and signing key were lost from the execution workspace. Historical reports of 14 HMI screens, 37 operating cases, electrical coupling or 124 tests do **not** establish features in this tree. The present implementation has a smaller training fuel model, a source-connected branch wrapper, three scalable diagram panels and a manual watch log. [HISTORY.md](HISTORY.md) records the old context without treating it as current evidence.
+The runnable application is **version 0.5.1, a rebuild**. The old source and signing key were lost from the execution workspace. Historical reports of 14 HMI screens, 37 operating cases, electrical coupling or 124 tests do **not** establish features in this tree. The present implementation has a smaller training fuel model, a source-connected branch wrapper, three scalable diagram panels and a manual watch log. [HISTORY.md](HISTORY.md) records the old context without treating it as current evidence.
 
 The currently distributed APK is a development-signed candidate. Build/static checks and browser workflows passed; Android device behavior and BELEM-specific model/UI fidelity remain unverified. Do not report the entire original product as complete.
 
@@ -52,6 +52,8 @@ npm run verify:browser
 
 On Linux without browser dependencies, use `npx playwright install --with-deps chromium`. The harness also accepts `CHROMIUM_PATH`. Native builds need a full JDK 17 including `javac`, SDK 36, NDK and CMake; use [ANDROID.md](ANDROID.md), not commands from a lost earlier chat.
 
+The 0.5.1 recheck fixes a slow-storage save/navigation race and small-screen diagram collapse, with 37 tests and 15 browser groups passing locally. See [RECHECK-2026-10-25.md](RECHECK-2026-10-25.md) for exact scope and native status.
+
 ## Where to resume
 
 1. Run the current APK through [NATIVE_QA.md](NATIVE_QA.md) on a representative Android device. Record actual device/API/ABI, APK SHA, steps and logs. Browser success does not answer this task.
@@ -82,7 +84,7 @@ Finish one bounded change, run relevant checks, commit it and push the branch. U
 ```text
 Work on the private repository https://github.com/thaungzan93/belem-lng.
 Read AGENTS.md, docs/HANDOVER.md, docs/STATUS.md and docs/TASKS.md first.
-This is the 0.5.0 rebuild; historical old-app features are not current code.
+This is the 0.5.1 rebuild; historical old-app features are not current code.
 Pick one unclaimed bounded task, create a branch, inspect its actual source,
 implement and run relevant checks, then update the handover/task status and
 push a reviewable commit/PR. Preserve manual-vs-simulator separation and
