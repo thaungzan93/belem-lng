@@ -2,6 +2,8 @@
 
 Version: 0.4.0 rebuild. This is a new implementation, not recovered version 0.3.1 source.
 
+New collaborators: read [HANDOVER.md](HANDOVER.md), [ARCHITECTURE.md](ARCHITECTURE.md), [DATA.md](DATA.md) and [REFERENCES.md](REFERENCES.md). The full shared handover, QA plan and small durable CI evidence copies are now in Git; source/reference archives remain private release assets. This handover task changes documentation/reference tooling, not the application or distributed APK.
+
 ## Working source
 
 - Shared fuel-mass training engine and adjustable assumptions.
@@ -35,8 +37,9 @@ The earlier local build is retained separately and has a different APK hash. It 
 
 - Repository access and delivery are working. The source is private and the owner's initial commit is preserved. The retired SDK-package issue in the first hosted attempt was fixed and the subsequent build passed.
 - This workspace has no `/dev/kvm`, so hardware-accelerated emulator testing is unavailable. No physical Android device is connected.
-- Original reference PDFs, HMI exports, old source and old signing key remain unavailable.
+- The owner's 312,884,714-byte Drive bundle was recovered on 2026-10-25. It contains a general GTT training PDF plus nested H1843/FGSS sets with 99 further PDF file entries, including the five separately named structural PDFs. The [reference manifest](reference-manifest.json) and recursive inventory distinguish recovered files from reviewed applicability; no model calibration was performed.
+- The separately uploaded `06.zip`, original HMI photo files/digital exports, old app source and old signing key remain unavailable. Candidate.1's Model/status missing-files message predates this recovery.
 
 ## Next bounded checkpoint
 
-Install the candidate on a representative Android device and exercise offline launch, controls, saved-record Edit/Cancel/Save, force-stop/reopen, sharing and sustained responsiveness. Record actual results before calling the build runtime-verified. Recover vessel references and calibrate the model as separate tasks in TASKS.md. Other AI tools should read AGENTS.md and these checkpoint documents before editing.
+Install the candidate on a representative Android device and exercise offline launch, controls, saved-record Edit/Cancel/Save, force-stop/reopen, sharing and sustained responsiveness. Record actual results before calling the build runtime-verified. In parallel, review recovered source revisions/applicability, build a page-cited tag/topology register for one panel and calibrate its behavior as separate tasks in TASKS.md. Other AI tools should read AGENTS.md and these checkpoint documents before editing.

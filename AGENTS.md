@@ -1,6 +1,8 @@
 # Shared contributor instructions
 
-This repository is a new implementation, version 0.4.0. The original app code, signing key and vessel-reference archives were not recovered. Historical notes do not establish implemented features or current passing checks.
+This repository is a new implementation, version 0.4.0. The original app code and signing key were not recovered; reference recovery is tracked separately below. Historical notes do not establish implemented features or current passing checks.
+
+Read [docs/HANDOVER.md](docs/HANDOVER.md), [docs/STATUS.md](docs/STATUS.md) and [docs/TASKS.md](docs/TASKS.md) first. Reference recovery changed on 2026-10-25: the owner's Drive bundle was retrieved, including H1843/FGSS PDFs. Consult [docs/REFERENCES.md](docs/REFERENCES.md) and its manifest before assuming sources are missing or parameters are verified. The old application source/signing key and original HMI photo files remain unavailable.
 
 ## Work in small finished checkpoints
 
@@ -20,4 +22,4 @@ The old candidate reportedly stalled in react-native-svg native TSpan/Paint text
 
 Use package-lock.json. Run npm ci, npm run typecheck, npm test and npm run export:web. Run npm run verify:browser with an installed Chromium browser; see README.md. Native build instructions are in docs/ANDROID.md. CI results must match the commit being discussed. Keep source, browser, emulator and physical-device results separate. Never reuse old counts or an old APK's checks as current evidence.
 
-Never commit credentials, keys, original private reference files or generated APK/ZIP files. Android native directories are generated from app.json by Expo prebuild. The new application ID keeps this rebuild separate from the earlier installation; the original signing key is unavailable. Default CI APKs are development-signed candidates, not approved production or vessel-control builds.
+Never commit credentials, private signing keys or generated APK/ZIP files. The owner authorizes sharing project context and source references with collaborators in this private repository. Keep large original reference bundles in the private reference release, with identities, hashes and applicability recorded in docs/REFERENCES.md; small reviewed source extracts may be tracked with provenance. Android native directories are generated from app.json by Expo prebuild. The new application ID keeps this rebuild separate from the earlier installation; the original signing key is unavailable. Default CI APKs are development-signed candidates, not approved production or vessel-control builds.

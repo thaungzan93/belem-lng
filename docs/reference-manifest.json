@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "recoveredOn": "2026-10-25",
+  "repositoryVisibility": "private",
+  "ownerAuthorization": "Owner requested uploading project context and references needed by other AI collaborators to the private repository.",
+  "originalURL": "https://drive.google.com/file/d/1zHtmCNCSggOgJXufD8U1UVEU7Txbfp2P/view",
+  "originalDisplayName": "GTT Training_Fuel tank operational familiarization.zip",
+  "releaseURL": "https://github.com/thaungzan93/belem-lng/releases/tag/references-2026-10-25",
+  "assetName": "belem-owner-reference-bundle.zip",
+  "bytes": 312884714,
+  "sha256": "50bf9889bb3acde59344c59103f0124a31196b69daac366e7df850a65bcf5578",
+  "scope": "Mixed original bundle: general GTT training PDF plus H1843/fgsa candidate vessel/OEM references. Inventory does not establish reviewed applicability or calibration.",
+  "components": [
+    {
+      "name": "GTT Training_Fuel tank operational familiarization_B023.pdf",
+      "bytes": 11550079,
+      "sha256": "ccb8960d0e9bd4906056d3c57650fa5b3dde5dcff593aacf44f12c72e2ca8bc8",
+      "classification": "general_GTT_training"
+    },
+    {
+      "name": "H1843.zip",
+      "bytes": 283099394,
+      "sha256": "c6c19f91375c442c4fea17af9ca83f9a22da0ac338c6398bde86dfc8867ccafa",
+      "classification": "candidate_vessel_OEM_references_applicability_unreviewed",
+      "pdfFileEntries": 85
+    },
+    {
+      "name": "fgsa.zip",
+      "bytes": 19367319,
+      "sha256": "c0a321a590452532155cd29a89624780a0f9cbb868cc7421703e4067e46cd746",
+      "classification": "candidate_vessel_OEM_references_applicability_unreviewed",
+      "pdfFileEntries": 14
+    }
+  ],
+  "separatelyUploadedStructuralPdfsRecovered": [
+    {
+      "container": "H1843.zip",
+      "member": "H1843/H1843A完工图纸/19-FGSS PART-ok/AUXANA1.5.1-H1843A-CG-H1843A-M_FGSS-01-PUMP TOWER STRESS ANALYSIS-Ver1.2-SignatureFile-001.PDF",
+      "status": "recovered_from_owner_drive_bundle"
+    },
+    {
+      "container": "H1843.zip",
+      "member": "H1843/H1843A完工图纸/19-FGSS PART-ok/AUXANA1.5.2-H1843A-CG-H1843A-M_FGSS-02-STRUCTURAL ANALYSES FOR COMBINED DOME PIPE PENETRATIONS (THERMAL, STATIC & FATIGUE)-Ver1.2-SignatureFile-001.PDF",
+      "status": "recovered_from_owner_drive_bundle"
+    },
+    {
+      "container": "H1843.zip",
+      "member": "H1843/H1843A完工图纸/19-FGSS PART-ok/AUXANA1.5.4-H1843A-CG-H1843A-M_FGSS-03-STRUCTURAL ANALYSES FOR PTBS (THERMAL, STATIC & FATIGUE)-Ver1.2-SignatureFile-001.PDF",
+      "status": "recovered_from_owner_drive_bundle"
+    },
+    {
+      "container": "H1843.zip",
+      "member": "H1843/H1843A完工图纸/19-FGSS PART-ok/AUXDWG00017-H1843A-CG-H1843A-M_FGSS-15-DETAILS OF THE CROSSING PIECES OF LIQUID & GAS DOME COVER-Ver1.2-SignatureFile-001.PDF",
+      "status": "recovered_from_owner_drive_bundle"
+    },
+    {
+      "container": "H1843.zip",
+      "member": "H1843/H1843A完工图纸/19-FGSS PART-ok/AUXDWGPT020-H1843A-CG-H1843A-M_FGSS-05-PUMP TOWER - TUBULAR STRUCTURE-Ver1.2-SignatureFile-001.PDF",
+      "status": "recovered_from_owner_drive_bundle"
+    }
+  ],
+  "remainingMissing": [
+    {
+      "name": "06.zip",
+      "status": "not_available_contents_unverified"
+    },
+    {
+      "name": "Original ship HMI photo files, suffixes 1036/1023/988/961/962/1589",
+      "status": "not_available_in_current_workspace"
+    },
+    {
+      "name": "Original digital HMI exports/fonts",
+      "status": "not_recovered"
+    },
+    {
+      "name": "Original v0.3.x app source",
+      "status": "not_recovered"
+    },
+    {
+      "name": "Original app private signing key",
+      "status": "not_recovered_keep_outside_repository"
+    }
+  ],
+  "modelCalibration": "not_performed",
+  "documentProvenanceRequired": [
+    "container and member SHA-256",
+    "document number and title",
+    "revision",
+    "page or sheet",
+    "unit",
+    "vessel/equipment applicability",
+    "installed commissioning confirmation where required"
+  ]
+}

@@ -1,6 +1,6 @@
 # Belem LNG Rebuild
 
-A new Android-first, offline React Native / Expo application for manual LNG watch records and a training fuel-system simulator. Version 0.4.0 starts a new implementation because the earlier project, signing key and ship-reference archives could not be recovered.
+A new Android-first, offline React Native / Expo application for manual LNG watch records and a training fuel-system simulator. Version 0.4.0 starts a new implementation because the earlier project and signing key could not be recovered. The owner's mixed GTT/H1843/FGSS reference bundle was recovered on 2026-10-25 for future source validation; it has not yet calibrated this model.
 
 This repository contains executable source and tests. It does not restore the earlier application's reported 37 operating cases, protection matrix, electrical model or source-instrument register. See [STATUS](docs/STATUS.md), [TASKS](docs/TASKS.md) and [MODEL](docs/MODEL.md) for implemented behavior and limits.
 
@@ -55,8 +55,8 @@ python3 -m http.server 8080 --directory dist/web
 
 ## Collaborate without losing work
 
-Read [AGENTS.md](AGENTS.md) before coding. Assign one task and branch per contributor, review pull requests, and keep [STATUS](docs/STATUS.md) and [TASKS](docs/TASKS.md) current. End each session at a tested commit with a concrete next task and explicit blockers. GitHub does not automatically coordinate AI agents.
+**New AI or developer: start with [the complete handover](docs/HANDOVER.md).** It includes a copyable starter prompt, product decisions, architecture/data documentation, verification evidence, reference locations and next tasks. Read [AGENTS.md](AGENTS.md) before coding. Assign one task and branch per contributor, review pull requests, and keep [STATUS](docs/STATUS.md) and [TASKS](docs/TASKS.md) current. End each session at a tested commit with a concrete next task and explicit blockers. GitHub does not automatically coordinate AI agents.
 
 For repository authorization and the first push, see [GitHub setup](docs/GITHUB.md).
 
-Do not commit signing keys, passwords, generated APKs/ZIPs or original private ship documents. Keep private references outside version control and retain document identity, revision, page and applicability when adding verified vessel data.
+The owner-authorized reference bundle is stored separately in the private [reference release](https://github.com/thaungzan93/belem-lng/releases/tag/references-2026-10-25). See [REFERENCES](docs/REFERENCES.md) for the GTT-versus-vessel distinction, hashes, inventory and missing files. Do not commit signing keys, passwords or generated APKs/ZIPs. Retain document identity, revision, page and applicability when adding source-confirmed vessel data.

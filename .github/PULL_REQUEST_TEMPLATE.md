@@ -8,4 +8,4 @@ List checks actually run and their results. Separate source, browser, Android em
 
 ## Source and continuation
 
-Record assumptions/document provenance affected. Update docs/STATUS.md and docs/TASKS.md with the next concrete task. Do not include signing keys, credentials or original private documents.
+Record assumptions/document provenance affected. Update docs/STATUS.md and docs/TASKS.md with the next concrete task. Keep signing keys and credentials outside the repository; owner-authorized reference material follows docs/REFERENCES.md.

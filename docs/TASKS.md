@@ -25,7 +25,9 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 
 ## Model and vessel fidelity
 
-- [ ] Recover original vessel references, ship HMI exports and the previous source if possible. Inventory hashes, revisions and applicability.
+- [x] Recover the owner's mixed Drive bundle; preserve bytes/hash, recursive member inventory and general-GTT-versus-vessel classification.
+- [ ] Review recovered H1843/FGSS document revisions and applicability; create a page-cited tag/topology register before adopting parameters or control logic.
+- [ ] Recover remaining `06.zip`, original ship HMI photos/digital exports and previous app source if possible. Preserve source identities; keep any recovered signing key outside GitHub.
 - [ ] Replace training capacities/rates with source-confirmed, revision-controlled values; do not copy general GTT examples as vessel settings.
 - [ ] Expand thermodynamics beyond ideal methane and fixed-temperature latent boiloff using measured data and a documented validity range.
 - [ ] Add source-confirmed equipment tags, detailed routes and operating cases. The old reported 37 cases are not present in this rebuild.
@@ -38,3 +40,8 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 - [ ] Source-instrument register and per-tag diagram mapping once original data is recovered.
 - [ ] Measured temperature trends and engineer calculators with clear units/assumptions.
 - [ ] Multi-device sync/access control only after a backend is specified; current records are local.
+
+## Collaboration handover
+
+- [x] Add durable cross-AI handover, product/history context, architecture/data contract, native QA plan, evidence snapshots, reference locations and a reusable session template.
+- [ ] After an actual Android device run, fill NATIVE_QA.md results with exact device/APK/commit evidence instead of copying source/browser claims.

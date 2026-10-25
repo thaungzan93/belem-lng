@@ -1,0 +1,30 @@
+{
+  "status": "private_prerelease_published",
+  "releaseURL": "https://github.com/thaungzan93/belem-lng/releases/tag/v0.4.0-candidate.1",
+  "releaseId": 423095208,
+  "publicationRun": "https://github.com/thaungzan93/belem-lng/actions/runs/40153265983",
+  "packagedSourceCommit": "5d1e353e704699c66ba66f63debb406107ab8be5",
+  "androidSourceCommit": "db31cd070b2a1457802f0b7d6a6caff7c80f60ae",
+  "assets": [
+    {
+      "name": "belem-lng-v0.4.0-all.zip",
+      "size": 25163197,
+      "digest": "sha256:6e87eda7bca379c010f073c3a30677ccc1ef6f828649e608b7f70a6c04328761",
+      "browser_download_url": "https://github.com/thaungzan93/belem-lng/releases/download/v0.4.0-candidate.1/belem-lng-v0.4.0-all.zip"
+    },
+    {
+      "name": "belem-lng-v0.4.0-candidate.apk",
+      "size": 57725876,
+      "digest": "sha256:3b73368f52bc183393bd8c6f20fe5cc4bec56882d5dd63f32d4eed292936ec71",
+      "browser_download_url": "https://github.com/thaungzan93/belem-lng/releases/download/v0.4.0-candidate.1/belem-lng-v0.4.0-candidate.apk"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "size": 188,
+      "digest": "sha256:06440763913eba239774afac2bfda4eb395140bc85b7a05f1f56bb263ef759e3",
+      "browser_download_url": "https://github.com/thaungzan93/belem-lng/releases/download/v0.4.0-candidate.1/SHA256SUMS.txt"
+    }
+  ],
+  "androidRuntimeVerification": "not_run",
+  "remaining": "Android device tests and source-confirmed vessel UI/model fidelity"
+}

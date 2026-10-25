@@ -1,0 +1,77 @@
+name: Archive recovered owner references
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha256:
+        description: SHA-256 of the recovered mixed owner-reference bundle
+        required: true
+        type: string
+        default: 50bf9889bb3acde59344c59103f0124a31196b69daac366e7df850a65bcf5578
+
+permissions:
+  contents: write
+
+concurrency:
+  group: owner-reference-archive-2026-10-25
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      REFERENCE_TAG: references-2026-10-25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Validate private destination and pinned reference digest
+        env:
+          EXPECTED_SHA256: ${{ inputs.expected_sha256 }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          expected = os.environ['EXPECTED_SHA256'].strip().lower()
+          assert expected == '50bf9889bb3acde59344c59103f0124a31196b69daac366e7df850a65bcf5578', 'Digest differs from the reviewed owner-reference recovery'
+          repository = os.environ['GITHUB_REPOSITORY']
+          metadata = json.loads(subprocess.check_output(['gh', 'api', 'repos/' + repository], text=True))
+          assert metadata['private'] is True and metadata['full_name'].lower() == repository.lower(), 'Reference assets require the private repository'
+          PY
+      - name: Download and inventory the mixed owner-reference archive
+        env:
+          EXPECTED_SHA256: ${{ inputs.expected_sha256 }}
+        run: |
+          python scripts/archive-reference.py \
+            --expected-sha256 "$EXPECTED_SHA256" \
+            --output-dir artifacts/reference-archive
+          (cd artifacts/reference-archive && sha256sum -c SHA256SUMS.txt)
+      - name: Publish the separate private reference prerelease
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import os
+          import subprocess
+          repository = os.environ['GITHUB_REPOSITORY']
+          tag = os.environ['REFERENCE_TAG']
+          result = subprocess.run(['gh', 'api', f'repos/{repository}/releases/tags/{tag}'], text=True, capture_output=True)
+          if result.returncode:
+              assert 'HTTP 404' in result.stderr, 'Could not verify reference release existence'
+              body = Path('artifacts/reference-archive/release-notes.txt')
+              body.write_text('Recovered owner-reference bundle, retained privately with SHA-256 and recursive ZIP inventory.\n\nThe GTT training PDF is general training. H1843/fgsa contain filename-indicated candidate vessel references; per-document applicability is unreviewed. Recovery does not establish Belem settings, commissioned limits, source-exact UI or model calibration.\n\nArchive contents are hashed/inventoried without filesystem extraction or execution. This separate reference release does not replace application candidate assets.\n')
+              target = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+              subprocess.run(['gh', 'release', 'create', tag, '--repo', repository, '--target', target,
+                              '--title', 'Recovered owner references — 2026-10-25', '--prerelease', '--notes-file', str(body)], check=True)
+          release = json.loads(subprocess.check_output(['gh', 'release', 'view', tag, '--repo', repository, '--json', 'tagName,isPrerelease'], text=True))
+          assert release['tagName'] == tag and release['isPrerelease'] is True, 'Expected a separate reference prerelease'
+          PY
+          gh release upload "$REFERENCE_TAG" \
+            artifacts/reference-archive/belem-owner-reference-bundle.zip \
+            artifacts/reference-archive/reference-inventory.json \
+            artifacts/reference-archive/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" --clobber

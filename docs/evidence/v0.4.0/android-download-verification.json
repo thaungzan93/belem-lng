@@ -1,0 +1,35 @@
+{
+  "status": "static_recheck_passed",
+  "generatedAtUTC": "2026-10-24T14:34:09.387400+00:00",
+  "scope": "Downloaded GitHub artifact identity and independent local static APK recheck only. No Android runtime, install, offline launch, saved-record editing or device responsiveness test occurred.",
+  "githubRunId": 40101785824,
+  "githubRunURL": "https://github.com/thaungzan93/belem-lng/actions/runs/40101785824",
+  "githubArtifactId": 12563312880,
+  "githubArtifactName": "belem-android-candidate-2",
+  "archiveSHA256": "3265001f7b8f31e66473a80a594f2227644108335b5d99de738fad6feadec5cf",
+  "apkSHA256": "3b73368f52bc183393bd8c6f20fe5cc4bec56882d5dd63f32d4eed292936ec71",
+  "apkBytes": 57725876,
+  "sourceCommit": "db31cd070b2a1457802f0b7d6a6caff7c80f60ae",
+  "ciTrackedSourceModifiedAfterCheckout": false,
+  "developmentCertificateSHA256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "certificateMatchesLocalRebuildCandidate": true,
+  "rawCIReportSHA256": "d84748c1268784c8039b9d7780353dbca9a2aef3b35e28fb7afe50e85d79d40e",
+  "checks": [
+    "Artifact archive digest matches GitHub API digest",
+    "Raw CI SHA256SUMS verifies APK and report",
+    "CI report source commit matches successful workflow run; tracked tree clean",
+    "Package, version and versionCode match app.json",
+    "Minimum API 24, target API 36 and launcher activity",
+    "APK is not debuggable and passes full ZIP CRC validation",
+    "APK signature verified with v2 signature scheme",
+    "Network, overlay, microphone, storage and configured blocked permissions absent",
+    "Hermes bytecode embedded at assets/index.android.bundle",
+    "All four Android ABIs include the Hermes native library",
+    "APK ZIP alignment verified for 16 KB pages",
+    "All 28 64-bit ELF libraries have 16 KB aligned LOAD segments"
+  ],
+  "runtimeVerification": {
+    "status": "not_run",
+    "reason": "No emulator/physical device used; static build and download verification only."
+  }
+}
