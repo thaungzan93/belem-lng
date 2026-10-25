@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "recoveredOn": "2026-10-25",
   "repositoryVisibility": "private",
-  "ownerAuthorization": "Owner requested uploading project context and references needed by other AI collaborators to the private repository.",
+  "ownerAuthorization": "Owner requested uploading project context and references needed by other AI collaborators to the private repository, and explicitly authorized the original six HMI JPEGs and 06.zip in private Git.",
   "originalURL": "https://drive.google.com/file/d/1zHtmCNCSggOgJXufD8U1UVEU7Txbfp2P/view",
   "originalDisplayName": "GTT Training_Fuel tank operational familiarization.zip",
   "releaseURL": "https://github.com/thaungzan93/belem-lng/releases/tag/references-2026-10-25",
@@ -61,14 +61,6 @@
   ],
   "remainingMissing": [
     {
-      "name": "06.zip",
-      "status": "not_available_contents_unverified"
-    },
-    {
-      "name": "Original ship HMI photo files, suffixes 1036/1023/988/961/962/1589",
-      "status": "not_available_in_current_workspace"
-    },
-    {
       "name": "Original digital HMI exports/fonts",
       "status": "not_recovered"
     },
@@ -90,5 +82,169 @@
     "unit",
     "vessel/equipment applicability",
     "installed commissioning confirmation where required"
-  ]
+  ],
+  "additionalOriginalUploads": {
+    "recoveredOn": "2026-10-25",
+    "inventory": "docs/REFERENCE_UPLOADS.md",
+    "hmiPhotographs": {
+      "manifest": "docs/hmi-photo-manifest.json",
+      "fileEntries": 6,
+      "bytes": 714466,
+      "sourceIds": [
+        "HMI-961",
+        "HMI-962",
+        "HMI-988",
+        "HMI-1023",
+        "HMI-1036",
+        "HMI-1589"
+      ],
+      "classification": "original_owner_supplied_photographs_of_HMI_not_digital_exports",
+      "status": "recovered_byte_for_byte_in_private_git"
+    },
+    "bunkeringArchive": {
+      "sourceId": "BUNKERING-06",
+      "originalFilename": "06.zip",
+      "path": "reference-material/bunkering/06.zip",
+      "sourceAttachmentGroup": "01a11141-b2f6-705a-be22-15d971b0909a",
+      "sourceAttachmentId": "d1e3d417-10dc-40ee-aa28-1af4c750cd8d",
+      "uploadedFilename": "1-06.zip",
+      "bytes": 7914347,
+      "sha256": "f9f3fa4aacf801f48a51cd73eb0fa2e9864cb45b9e61af51942505f51140552c",
+      "classification": "owner_original_Shanghai_LNG_bunkering_records_January_2026",
+      "preservation": "byte_for_byte_copy; only upload ordinal removed from filename",
+      "storageAuthorization": "Owner explicitly authorized this original 06.zip in the private Git repository.",
+      "crcIntegrity": "passed (Python zipfile.testzip returned no bad member)",
+      "fileEntries": 8,
+      "directoryEntries": 1,
+      "pdfFileEntries": 4,
+      "pdfPages": 24,
+      "members": [
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/",
+          "bytes": 0,
+          "compressedBytes": 2,
+          "crc32": "00000000",
+          "isDirectory": true
+        },
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/31未来质量.pdf",
+          "bytes": 2189323,
+          "compressedBytes": 1907200,
+          "crc32": "925cf9bf",
+          "isDirectory": false,
+          "sha256": "89f98ff1edf311f17568314eafd912cdf93515a5195aa90d084cf2b2d412cd95",
+          "type": "pdf",
+          "pages": 2,
+          "title": "Certificate of Quality — Liquefied Natural Gas",
+          "summary": "Issued 31-Dec-2025 for M/T HAI GANG WEI LAI; loading/sampling at Yang Shan LNG Terminal, Shanghai on 30-Dec-2025. Includes a composition and total-sulfur analysis.",
+          "applicability": "Supplier-cargo quality certificate; it does not establish BELEM equipment settings or a universal LNG composition.",
+          "review": "PDF text inspected"
+        },
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/COQ.msg",
+          "bytes": 2557952,
+          "compressedBytes": 2228929,
+          "crc32": "3a70d00b",
+          "isDirectory": false,
+          "sha256": "fdc7c3041f6223061293d0bb53149499e6a0fd0e12e82ffefcda77669f09910a",
+          "type": "msg",
+          "summary": "Original Outlook MSG file named COQ.msg.",
+          "review": "Bytes inventoried only; message body/attachments not executed or relied on for values."
+        },
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/DOS.msg",
+          "bytes": 997376,
+          "compressedBytes": 771258,
+          "crc32": "9ddb8cb2",
+          "isDirectory": false,
+          "sha256": "2eac94689ede89f8138936e511a45d8357c6a8c1ff54a5ed2534b1b63ec95103",
+          "type": "msg",
+          "summary": "Original Outlook MSG file named DOS.msg.",
+          "review": "Bytes inventoried only; message body/attachments not executed or relied on for values."
+        },
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/LNG Tank CD  Shanghai 07-Jan-2026.xlsx",
+          "bytes": 222899,
+          "compressedBytes": 207932,
+          "crc32": "afc6743e",
+          "isDirectory": false,
+          "sha256": "2b38bc8304b8545ca972c40a8c4d66954a57f558430a281056a5174628321a73",
+          "type": "xlsx",
+          "summary": "BELEM tank cooldown/first-bunkering workbook with sheets CC Belem CD, CD curve CC BELEM, CC Belem 1st Bunkering (original name has a trailing space), and Reference tables.",
+          "applicability": "Operational log/worksheet, with narrative events and readings; formulas, chart results and completeness have not been validated.",
+          "review": "Workbook ZIP/XML names and shared strings inspected without executing formulas or active content.",
+          "sheetNames": [
+            "CC Belem CD",
+            "CD curve CC BELEM",
+            "CC Belem 1st Bunkering ",
+            "Reference tables"
+          ]
+        },
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/MSDS Malaysia Liquefied Natural Gas -.pdf",
+          "bytes": 318666,
+          "compressedBytes": 304722,
+          "crc32": "0b93427f",
+          "isDirectory": false,
+          "sha256": "70653f415640b6019aea850a0fc29b6b0b2bc98e96ba30f605b6c8648446aaba",
+          "type": "pdf",
+          "pages": 14,
+          "title": "Malaysia Liquefied Natural Gas — Safety Data Sheet",
+          "version": "1.3",
+          "releaseDate": "2019-09-11",
+          "summary": "Fourteen-page PETRONAS/Malaysia LNG safety data sheet.",
+          "applicability": "General supplier safety information; not a vessel-specific FGSS setting sheet.",
+          "review": "PDF text inspected"
+        },
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/SSES-JPO-CMA 13Kanchorage-rev 0 - 20260106.docx",
+          "bytes": 1818230,
+          "compressedBytes": 1787903,
+          "crc32": "28a3a9f1",
+          "isDirectory": false,
+          "sha256": "986d94a30efe800a3d3fae226cda14786404c2b23fa6194a110998038f220032",
+          "type": "docx",
+          "title": "SSES Joint Plan of Operations (JPO) — CMA CGM 13k TEU Container Vessel",
+          "revisionInFilename": "0",
+          "dateInFilename": "2026-01-06",
+          "summary": "Joint cooldown/LNG-bunkering plan between CMA CGM 13K TEU series receiving vessels and HAI GANG WEI LAI at Lv Hua Shan South Anchorage.",
+          "applicability": "Series-level operating plan. Filename revision/date do not establish BELEM approval or installed protection settings.",
+          "review": "DOCX ZIP/XML text inspected without executing active content."
+        },
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/WSHB26003.pdf",
+          "bytes": 345927,
+          "compressedBytes": 343785,
+          "crc32": "1e2f5cd2",
+          "isDirectory": false,
+          "sha256": "c6d33e5398e34f8dd2d0759463baa2142e46d39a5848209b103900ed8060128c",
+          "type": "pdf",
+          "pages": 4,
+          "title": "Bunker Delivery Note / Bunker Declaration and unloading certificates",
+          "summary": "Four-page scanned/signed set: Bunker Delivery Note / Bunker Declaration for delivery from HAI GANG WEI LAI to CMA CGM BELEM at LVHUASHAN anchorage on 9-Jan-2026; opening/closing measurements dated 9–10-Jan-2026. Followed by certificates of measurements before unloading, after unloading and quantity unloaded for HAI GANG WEI LAI.",
+          "applicability": "Event/cargo measurement evidence; unloading-tank readings concern the delivering bunker vessel HAI GANG WEI LAI, not BELEM tank geometry, HMI configuration or commissioned limits.",
+          "review": "Scanned page titles visually/OCR inspected; no searchable text layer and no numerical model calibration."
+        },
+        {
+          "member": "06. LNG Bunker Shanghai 09-Jan-2026/WSHCD26003.pdf",
+          "bytes": 362865,
+          "compressedBytes": 360748,
+          "crc32": "3a9c429d",
+          "isDirectory": false,
+          "sha256": "f31319bdeb175e7178af2080c37b53587f73b1d5692c196bd241bfedfef7965d",
+          "type": "pdf",
+          "pages": 4,
+          "title": "Bunker Delivery Note / Bunker Declaration and unloading certificates",
+          "summary": "Four-page scanned/signed set: Bunker Delivery Note / Bunker Declaration for delivery from HAI GANG WEI LAI to CMA CGM BELEM at LVHUASHAN anchorage on 9-Jan-2026. Followed by certificates of measurements before unloading, after unloading and quantity unloaded for HAI GANG WEI LAI.",
+          "applicability": "Event/cargo measurement evidence; unloading-tank readings concern the delivering bunker vessel HAI GANG WEI LAI, not BELEM tank geometry, HMI configuration or commissioned limits.",
+          "review": "Scanned page titles visually/OCR inspected; no searchable text layer and no numerical model calibration."
+        }
+      ],
+      "limitations": [
+        "Not an HMI project, digital HMI export, font pack, or source-code archive.",
+        "This inventory and limited content inspection do not validate workbook formulas, email contents, installed protection settings, or model calibration.",
+        "Original MSG and Office documents were preserved and statically inspected only; no document active content was executed."
+      ]
+    }
+  }
 }

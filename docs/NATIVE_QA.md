@@ -1,6 +1,6 @@
 # Android runtime QA plan
 
-**Every test below is NOT RUN for the published 0.4.0 candidate.** Static build, browser and publication results are recorded separately in [VERIFICATION.md](VERIFICATION.md). Change a result only after executing that test on the identified APK and retaining evidence. A checklist is not a passing test report.
+**Every test below is NOT RUN for the 0.5.0 diagram candidate.** Static build, browser and publication results are recorded separately in [VERIFICATION.md](VERIFICATION.md). Change a result only after executing that test on the identified APK and retaining evidence. A checklist is not a passing test report.
 
 ## Session record
 
@@ -22,10 +22,10 @@ Use PASS, FAIL, BLOCKED or NOT RUN for each result. Record actual actions, expec
 
 ## Preparation
 
-1. Download the private candidate and verify SHA256SUMS.txt. Expected APK digest is `3b73368f52bc183393bd8c6f20fe5cc4bec56882d5dd63f32d4eed292936ec71`.
+1. Download the private candidate and verify SHA256SUMS.txt. Use the digest from the version 0.5 release/static report; the 0.4 digest is not the new diagram APK.
 2. Back up any existing rebuild watch records before an update. Do not uninstall the only copy to bypass a signing mismatch. Package `com.belem.lng.rebuild` is separate from the older app; no automatic data migration is expected.
 3. Use a representative ARM device first; record any additional API/ABI/device separately. A software emulator result does not establish physical-device performance.
-4. Install via Android's package installer or `adb install -r path/to/the-candidate.apk`. Keep Metro and Expo Go stopped. Confirm package 0.4.0 / code 1 before testing.
+4. Install via Android's package installer or `adb install -r path/to/the-candidate.apk`. Keep Metro and Expo Go stopped. Confirm package 0.5.0 / code 2 before testing.
 5. Store synthetic fixtures and redacted screenshots/logs outside tracked source. For each crash/ANR preserve the time, last action, screen recording and available adb logcat / system ANR trace. Do not clear evidence by rebooting first.
 
 Example diagnostic commands; choose the connected device explicitly when several are present:
@@ -64,6 +64,8 @@ Force-stop is used for persistence tests; it must not be replaced by clearing ap
 | N17 | Rotate phone with diagram zoomed and with an unsaved edit open; repeat on tablet if available. | Layout remains readable; draft/state is retained; Save/Cancel stay accessible; diagram fits/zooms/pans without clipped controls. | NOT RUN | — |
 | N18 | Exercise fit, zoom buttons and finger scrolling/pan in portrait and landscape. | Entire fixed-aspect diagram can be inspected; native gestures do not intercept toolbar/form controls. | NOT RUN | — |
 | N19 | Repeat stepping, navigation, zoom and edit flows for a recorded session; record timings, stalls, memory/thermal context and ANRs. | Controls remain operable; crashes/ANRs/stalls are captured as failures, with actual observations rather than invented benchmarks. | NOT RUN | — |
+| N21 | Open Fuel/Bunker/ME IGPR panes; inspect source-tagged symbols and route presets. | All panes scale and inspector actions/source text remain reachable. Unmodeled feedback stays unknown. | NOT RUN | — |
+| N22 | Start supply; close 45HV1011, step, inspect 45PS1001; enable pump2 plus both branch gates and step. | Isolated pump allocation is zero; an alternate connected branch transfers from the same ledger. Existing buffer inventory can continue supplying consumers. | NOT RUN | — |
 | N20 | Use increased font scale and Android accessibility navigation on essential controls. | Labels/readings and actions remain discoverable and reachable; record device-specific limitations. | NOT RUN | — |
 
 N14 needs a reviewed fault-injection method; none is claimed to exist in the release. If unavailable, mark BLOCKED. Never fill a real device's disk or corrupt the only watch database to provoke failure. If an instrumented build is used, record its separate SHA/commit and do not relabel its results as release-APK results.

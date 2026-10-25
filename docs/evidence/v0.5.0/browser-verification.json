@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "version": "0.5.0",
+  "checkedAt": "2026-10-25T10:17:03.200Z",
+  "scope": "Chromium browser integration: desktop 1500×1000 and phone viewport 412×915. No native Android, hardware or vessel-reference validation is implied.",
+  "checks": [
+    "Start fuel supply and one-minute stepping deliver gas; displayed mass ledger balances and model assumptions are visible",
+    "Source-style Fuel, Bunker and ME IGPR panes preserve scale; all four pumps, two compressors, parallel vaporizer/heater trains and both buffers are inspectable with distinct station arms",
+    "Source-tagged isolation gates stop actual pump allocation and an independently opened alternate pump branch transfers fuel from the same mass-conserving inventory",
+    "ESD latches every route disabled; reset leaves all equipment stopped and does not restart delivery",
+    "Manual mode shows unknown telemetry without simulator or per-buffer leakage; all route actuation and ESD controls are disabled",
+    "Real watch-entry saves preserve zero, tiny tagged readings and custom units; manual diagram converts 135 mbar(g) to 0.135 bar(g) without filling unknowns",
+    "Open record is read-only; Edit/Cancel/Close preserve the separate new-entry draft, and invalid numeric, UTC, unit and empty snapshots never change saved data",
+    "A failed device write retains the saved record and draft; retry saves the original ID/count, re-sorts observation time, adds a tag and keeps a cleared pressure unknown",
+    "Actual CSV/JSON files contain corrected observations, zeros, tiny readings, units and multiline notes; duplicate-ID restore is rejected and a valid merge preserves identities",
+    "Observations survive reload, older-record pagination remains editable, and notes-only edits preserve tiny values and originally absent units",
+    "Phone diagram fits its fixed aspect ratio, zoom and horizontal trackpad/wheel pan work, and record modal inputs/Close/Save/Cancel fit the phone viewport"
+  ],
+  "pageErrors": [],
+  "screenshots": [
+    "diagram-desktop.png",
+    "diagram-fuel-desktop.png",
+    "diagram-bunkering-desktop.png",
+    "diagram-igpr-desktop.png",
+    "diagram-phone.png",
+    "watch-edit-phone.png"
+  ]
+}

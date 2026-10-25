@@ -1,6 +1,6 @@
 # LNG training engine
 
-Version 0.4 uses a newly written, self-contained training model in `src/engine/lng.ts`. It does not restore the former project or establish fidelity to the ship's P&IDs, PLC logic, equipment curves or commissioned settings. No parameter below is presented as a verified BELEM value.
+The aggregate engine (introduced in version 0.4) uses a newly written, self-contained training model in `src/engine/lng.ts`. It does not restore the former project or establish fidelity to the ship's P&IDs, PLC logic, equipment curves or commissioned settings. No parameter below is presented as a verified BELEM value.
 
 The model supports heat-driven boiloff, BOG compression, liquid pumping with vaporisation, one gas buffer, a gas consumer, bunkering, commanded venting, and a latched simulator ESD. Each control changes the same inventory model used by the diagrams. It has no connection to onboard control equipment.
 
@@ -50,3 +50,7 @@ Tests verify the ideal-gas calculation, latent-heat boiloff, valve and equipment
 ## Boundaries
 
 The engine does not calculate methane saturation equilibrium, LNG mixture composition, flash gas from warm incoming LNG, tank temperature changes, buffer energy balance, stratification, rollover, cavitation, line pressure losses, real compressor/pump performance, relief-valve behavior, gas detection, electrical generation, or ship-specific protective logic. Original approved references and validation are required before developing those behaviors. Model results are estimates for exploring controls and inventories.
+
+## Version 0.5 circuit wrapper
+
+`src/engine/fuelCircuit.ts` adds independent four-pump, two-compressor and two-vaporizer requests plus branch isolation/common route gates. It masks effective equipment before advancing this inventory model and allocates actual transfer among connected branches. It does not multiply aggregate capacities or create independent buffer inventories. See [DIAGRAM_SOURCES.md](DIAGRAM_SOURCES.md) for source topology, training abstractions and remaining reference-only components.

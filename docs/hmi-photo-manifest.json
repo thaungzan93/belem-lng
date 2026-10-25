@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "recoveredOn": "2026-10-25",
+  "repositoryVisibility": "private",
+  "ownerAuthorization": "Owner authorized uploading these original reference files to the private repository for collaborators.",
+  "scope": "Six supplied original JPEG file bytes. These are photographs of ship HMI monitors, not source HMI projects, screenshots, fonts or commissioned setting exports.",
+  "totalBytes": 714466,
+  "derivedImagesCreated": false,
+  "files": [
+    {
+      "sourceId": "HMI-961",
+      "originalFilename": "217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_961.jpg",
+      "path": "docs/hmi-photos/217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_961.jpg",
+      "sourceAttachmentGroup": "01a11141-b2f6-705a-be22-15d971b0909a",
+      "sourceAttachmentId": "801f25bd-8b86-411d-a71a-29bdeece3284",
+      "uploadedFilename": "5-217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_961.jpg",
+      "bytes": 106272,
+      "sha256": "26a8411ae8ea35fe783afafbce80d7df4530eeb19b61a7b11d71c8e246574995",
+      "format": "JPEG",
+      "width": 1280,
+      "height": 960,
+      "subject": "FGSS system view with FGSS Plant Control popup",
+      "visibleScreenTitle": "FGSS PLANT CONTROL",
+      "subjectTags": [
+        "fgss",
+        "plant_control_popup",
+        "buffer_tank",
+        "bog",
+        "glycol"
+      ],
+      "classification": "original_owner_supplied_photograph_of_HMI",
+      "preservation": "byte_for_byte_copy; only upload ordinal removed from filename",
+      "limitations": [
+        "Perspective photograph of a physical monitor, not a digital HMI export.",
+        "Glare, moire, perspective, cropping and small text limit geometry and tag/value recovery.",
+        "Visible values and highlighted states are a photographed instant, not commissioned limits or a complete operating sequence."
+      ]
+    },
+    {
+      "sourceId": "HMI-962",
+      "originalFilename": "217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_962.jpg",
+      "path": "docs/hmi-photos/217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_962.jpg",
+      "sourceAttachmentGroup": "01a11141-b2f6-705a-be22-15d971b0909a",
+      "sourceAttachmentId": "801f25bd-8b86-411d-a71a-29bdeece3284",
+      "uploadedFilename": "1-217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_962.jpg",
+      "bytes": 106287,
+      "sha256": "dd3d5f153050b42bda3142cb9e9a4d1001dfdb2df2bc0b1e14294840e431f5f8",
+      "format": "JPEG",
+      "width": 1280,
+      "height": 960,
+      "subject": "Main-engine iGPR Overview",
+      "visibleScreenTitle": "iGPR Overview",
+      "subjectTags": [
+        "main_engine",
+        "igpr",
+        "buffer_tank"
+      ],
+      "classification": "original_owner_supplied_photograph_of_HMI",
+      "preservation": "byte_for_byte_copy; only upload ordinal removed from filename",
+      "limitations": [
+        "Perspective photograph of a physical monitor, not a digital HMI export.",
+        "Glare, moire, perspective, cropping and small text limit geometry and tag/value recovery.",
+        "Visible values and highlighted states are a photographed instant, not commissioned limits or a complete operating sequence."
+      ]
+    },
+    {
+      "sourceId": "HMI-988",
+      "originalFilename": "217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_988.jpg",
+      "path": "docs/hmi-photos/217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_988.jpg",
+      "sourceAttachmentGroup": "01a11141-b2f6-705a-be22-15d971b0909a",
+      "sourceAttachmentId": "801f25bd-8b86-411d-a71a-29bdeece3284",
+      "uploadedFilename": "4-217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_988.jpg",
+      "bytes": 130404,
+      "sha256": "a04c7ffee87a2315eb8d62eaabf868fb516d847f0b4eee78ab06b1201162326a",
+      "format": "JPEG",
+      "width": 1280,
+      "height": 960,
+      "subject": "Split monitor with Fuel Tank and Bunker Station views",
+      "visibleScreenTitle": "1.2 Fuel Tank / 1.3 Bunker Station",
+      "subjectTags": [
+        "fuel_tank",
+        "bunkering",
+        "split_monitor"
+      ],
+      "classification": "original_owner_supplied_photograph_of_HMI",
+      "preservation": "byte_for_byte_copy; only upload ordinal removed from filename",
+      "limitations": [
+        "Perspective photograph of a physical monitor, not a digital HMI export.",
+        "Glare, moire, perspective, cropping and small text limit geometry and tag/value recovery.",
+        "Visible values and highlighted states are a photographed instant, not commissioned limits or a complete operating sequence."
+      ]
+    },
+    {
+      "sourceId": "HMI-1023",
+      "originalFilename": "217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1023.jpg",
+      "path": "docs/hmi-photos/217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1023.jpg",
+      "sourceAttachmentGroup": "01a11141-b2f6-705a-be22-15d971b0909a",
+      "sourceAttachmentId": "801f25bd-8b86-411d-a71a-29bdeece3284",
+      "uploadedFilename": "3-217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1023.jpg",
+      "bytes": 136871,
+      "sha256": "fac9ca4f7996ae6e91195817ed1beb694f37d655ddf31e3d46802531606655c4",
+      "format": "JPEG",
+      "width": 1280,
+      "height": 960,
+      "subject": "Bunker Station — port and starboard liquid/vapour routes",
+      "visibleScreenTitle": "1.3 Bunker Station",
+      "subjectTags": [
+        "bunkering",
+        "vacuum_double_wall_pipe",
+        "port_and_starboard_stations"
+      ],
+      "classification": "original_owner_supplied_photograph_of_HMI",
+      "preservation": "byte_for_byte_copy; only upload ordinal removed from filename",
+      "limitations": [
+        "Perspective photograph of a physical monitor, not a digital HMI export.",
+        "Glare, moire, perspective, cropping and small text limit geometry and tag/value recovery.",
+        "Visible values and highlighted states are a photographed instant, not commissioned limits or a complete operating sequence."
+      ]
+    },
+    {
+      "sourceId": "HMI-1036",
+      "originalFilename": "217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1036.jpg",
+      "path": "docs/hmi-photos/217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1036.jpg",
+      "sourceAttachmentGroup": "01a11141-b2f6-705a-be22-15d971b0909a",
+      "sourceAttachmentId": "801f25bd-8b86-411d-a71a-29bdeece3284",
+      "uploadedFilename": "2-217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1036.jpg",
+      "bytes": 124277,
+      "sha256": "e66bc8e60404b931ec3e6a8fabf9754fbe895cd8660014a7a84ab31ab2d9e883",
+      "format": "JPEG",
+      "width": 1280,
+      "height": 960,
+      "subject": "Power Management Overview",
+      "visibleScreenTitle": "POWER MANAGEMENT OVERVIEW",
+      "subjectTags": [
+        "power_management",
+        "electrical_distribution"
+      ],
+      "classification": "original_owner_supplied_photograph_of_HMI",
+      "preservation": "byte_for_byte_copy; only upload ordinal removed from filename",
+      "limitations": [
+        "Perspective photograph of a physical monitor, not a digital HMI export.",
+        "Glare, moire, perspective, cropping and small text limit geometry and tag/value recovery.",
+        "Visible values and highlighted states are a photographed instant, not commissioned limits or a complete operating sequence."
+      ]
+    },
+    {
+      "sourceId": "HMI-1589",
+      "originalFilename": "217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1589.jpg",
+      "path": "docs/hmi-photos/217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1589.jpg",
+      "sourceAttachmentGroup": "01a11141-b2f6-705a-be22-15d971b0909a",
+      "sourceAttachmentId": "f13abe75-954e-47d8-9c45-8a926e8d9d01",
+      "uploadedFilename": "1-217e4ef1-ce79-4720-89fe-b02b1cd0d3e8-1_all_1589.jpg",
+      "bytes": 110355,
+      "sha256": "2147e7e0416936032c752fdebf2ce4cade85e53bec8f389cfdac0cdd983758ed",
+      "format": "JPEG",
+      "width": 960,
+      "height": 1280,
+      "subject": "FGSS Plant Control popup over Cold Glycol and Compressor System",
+      "visibleScreenTitle": "FGSS PLANT CONTROL / 1.4 Cold Glycol and Compressor System",
+      "subjectTags": [
+        "fgss",
+        "plant_control_popup",
+        "cold_glycol",
+        "compressor"
+      ],
+      "classification": "original_owner_supplied_photograph_of_HMI",
+      "preservation": "byte_for_byte_copy; only upload ordinal removed from filename",
+      "limitations": [
+        "Perspective photograph of a physical monitor, not a digital HMI export.",
+        "Glare, moire, perspective, cropping and small text limit geometry and tag/value recovery.",
+        "Visible values and highlighted states are a photographed instant, not commissioned limits or a complete operating sequence."
+      ]
+    }
+  ]
+}

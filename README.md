@@ -1,6 +1,6 @@
 # Belem LNG Rebuild
 
-A new Android-first, offline React Native / Expo application for manual LNG watch records and a training fuel-system simulator. Version 0.4.0 starts a new implementation because the earlier project and signing key could not be recovered. The owner's mixed GTT/H1843/FGSS reference bundle was recovered on 2026-10-25 for future source validation; it has not yet calibrated this model.
+A new Android-first, offline React Native / Expo application for manual LNG watch records and a training fuel-system simulator. The rebuild started at version 0.4.0 as a new implementation because the earlier project and signing key could not be recovered. Version 0.5.0 reconstructs three source-style line-diagram panels and adds independent flow-blocking branches. The recovered H1843/FGSS topology and HMI photos inform those diagrams; numerical rates and thermodynamics remain training assumptions.
 
 This repository contains executable source and tests. It does not restore the earlier application's reported 37 operating cases, protection matrix, electrical model or source-instrument register. See [STATUS](docs/STATUS.md), [TASKS](docs/TASKS.md) and [MODEL](docs/MODEL.md) for implemented behavior and limits.
 
@@ -25,7 +25,8 @@ The standalone APK build is separate: see [Android builds](docs/ANDROID.md). A d
 
 ## Current features
 
-- A scalable fuel-system training diagram with Fit, zoom and two-axis scroll pan. Equipment controls operate one shared plant state. Manual mode disables actuation and displays only the latest entered snapshot, leaving unknown values blank.
+- Three scalable source-style panels (Fuel, Bunker stations, ME IGPR), native symbols and source-cited inspectors. Four pumps, two BOG branches, two vaporizer branches and isolation gates operate one shared training inventory. Manual mode disables actuation and displays only the latest entered snapshot, leaving unknown values blank.
+- See [diagram sources and limits](docs/DIAGRAM_SOURCES.md) for source topology, training route abstractions and reference-only feedback.
 - Tank liquid/gas inventories, assumed latent-heat boiloff, ideal-methane ullage and buffer pressures, pump/vaporizer and BOG-compressor routes, consumer delivery, bunkering, commanded venting and an external fuel-mass ledger.
 - ESD latch/reset behavior; resetting does not restart equipment. Settings are labelled training assumptions rather than approved vessel settings.
 - Local watch records with 26 common reading fields, custom instrument tags and units, UTC timestamps and notes.

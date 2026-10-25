@@ -1,6 +1,6 @@
 # Implementation map
 
-This describes the version 0.4.0 rebuild in this repository. Start with [STATUS.md](STATUS.md), [TASKS.md](TASKS.md) and [../AGENTS.md](../AGENTS.md) for the current checkpoint and contribution rules. Historical feature descriptions do not establish current behavior. [MODEL.md](MODEL.md) explains the training assumptions; [DATA.md](DATA.md) defines the manual log contract.
+This describes the version 0.5.0 rebuild in this repository. Start with [STATUS.md](STATUS.md), [TASKS.md](TASKS.md) and [../AGENTS.md](../AGENTS.md) for the current checkpoint and contribution rules. Historical feature descriptions do not establish current behavior. [MODEL.md](MODEL.md) explains the training assumptions; [DATA.md](DATA.md) defines the manual log contract.
 
 ## Code map
 
@@ -8,8 +8,9 @@ This describes the version 0.4.0 rebuild in this repository. Start with [STATUS.
 | --- | --- |
 | `index.ts` | Registers the Expo root component. |
 | `App.tsx` | Owns simulator state, manual logbook, storage readiness, mode/navigation, settings and simulation timer. |
+| `src/engine/fuelCircuit.ts` | Independent branch/gate requests, effective connectivity and conserved flow allocations around the aggregate inventory model. |
 | `src/engine/lng.ts` | Pure TypeScript inventory model, commands, validation and derived metrics; no React or storage dependency. |
-| `src/components/ShipDiagram.tsx` | Controlled diagram: supplied readings/equipment plus callbacks; local fit/zoom/pan state. |
+| `src/components/ShipDiagram.tsx`, `src/components/diagram/` | Three source-style panels, source register/symbols, inspectors/plant controls and local fit/zoom/pan state. |
 | `src/components/WatchLog.tsx` | New-observation drafts, history/detail modal, edit drafts, backup merge and export UI. |
 | `src/storage/logbook.ts` | Reading metadata, parsers, version-one decoder, immutable add/update helpers and CSV serialization. |
 | `src/storage/exportFile.ts` | Browser download or native cache-file/system-share delivery. |
@@ -34,7 +35,7 @@ flowchart LR
   Save --> Book
 ```
 
-`App` keeps two independent domains: an in-memory `PlantState`, and `{version:1, entries}` persisted at `belem-lng.logbook.v1`. There is no backend, vessel/IAS connection, authentication layer or cross-device synchronization. Simulator state is recreated on app startup; JSON backups contain observations only.
+`App` keeps two independent domains: an in-memory `PlantState`, and `{version:1, entries}` persisted at `belem-lng.logbook.v1`. There is no backend, vessel/IAS connection, authentication layer or cross-device synchronization. Simulator/circuit state is recreated on app startup; JSON backups contain observations only. The App now uses createCircuit/commandCircuit/advanceCircuitPlant; metrics still derives the shared inventory through the original pure engine. See DIAGRAM_SOURCES.md for the branch API and model boundary.
 
 `plantRef.current` is updated alongside React state so timer callbacks use the latest committed plant. “Run 10×” advances ten simulation seconds per one-second JavaScript interval; it is not elapsed-wall-clock catch-up. A manual step advances 60 seconds. Navigation and mode changes pause running; simulation errors also stop it. The interval is cleaned up when running stops or manual mode is selected.
 

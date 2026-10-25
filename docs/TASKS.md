@@ -8,7 +8,7 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 - [x] Saved-record details and in-place edits with cancellation and unknown/zero preservation.
 - [x] Duplicate-ID import rejection and real CSV/JSON export helpers.
 - [x] Fuel-mass training model, common supply routes, ESD/reset and mass-ledger tests.
-- [x] Scalable native View/Text diagram with manual controls disabled.
+- [x] Three source-style scalable native panels, source-tagged inspectors and independent flow-blocking pump/compressor/vaporizer/bunker route controls; manual actuation disabled.
 - [x] Source/web CI and manual offline Android-candidate build automation.
 
 ## Repository and Android delivery
@@ -27,7 +27,8 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 
 - [x] Recover the owner's mixed Drive bundle; preserve bytes/hash, recursive member inventory and general-GTT-versus-vessel classification.
 - [ ] Review recovered H1843/FGSS document revisions and applicability; create a page-cited tag/topology register before adopting parameters or control logic.
-- [ ] Recover remaining `06.zip`, original ship HMI photos/digital exports and previous app source if possible. Preserve source identities; keep any recovered signing key outside GitHub.
+- [x] Recover and privately archive all six original HMI photos and 06.zip with hashes and applicability notes.
+- [ ] Recover editable digital HMI exports and previous app source if possible. Keep any recovered signing key outside GitHub.
 - [ ] Replace training capacities/rates with source-confirmed, revision-controlled values; do not copy general GTT examples as vessel settings.
 - [ ] Expand thermodynamics beyond ideal methane and fixed-temperature latent boiloff using measured data and a documented validity range.
 - [ ] Add source-confirmed equipment tags, detailed routes and operating cases. The old reported 37 cases are not present in this rebuild.

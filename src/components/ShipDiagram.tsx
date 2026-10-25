@@ -1,266 +1,85 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {
-  LayoutChangeEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from 'react-native';
-
-export type DiagramEquipmentKey =
-  | 'pump'
-  | 'compressor'
-  | 'vaporizer'
-  | 'gasValve'
-  | 'consumer'
-  | 'bunkering'
-  | 'vent';
-
+import React,{useEffect,useRef,useState} from 'react';
+import {LayoutChangeEvent,Modal,Pressable,ScrollView,StyleSheet,Text,View,NativeSyntheticEvent,NativeScrollEvent} from 'react-native';
+import type {EquipmentKey} from '../engine/lng';
+import type {FuelCircuitState,FuelCircuitDerived,FuelCircuitCommand,CircuitControlKey} from '../engine/fuelCircuit';
+import {equipmentById,sourceEquipment} from './diagram/equipment';
+import {createSymbols,mimicColors as c} from './diagram/symbols';
+import {renderPane,paneNames,DiagramPane,DiagramValues} from './diagram/layouts';
+export type DiagramEquipmentKey=EquipmentKey;
 export interface ShipDiagramProps {
-  manual: boolean;
-  values: {
-    tankVolumeM3?: number;
-    tankPressureBarg?: number;
-    bufferPressureBarg?: number;
-    gasFlowKgh?: number;
-    temperatureC?: number;
-  };
-  equipment: Record<DiagramEquipmentKey, boolean>;
-  esdLatched: boolean;
-  onToggle: (key: DiagramEquipmentKey) => void;
-  onEsd: () => void;
-  onReset: () => void;
+ manual:boolean;values:DiagramValues;equipment:Record<EquipmentKey,boolean>;esdLatched:boolean;
+ onToggle:(key:EquipmentKey)=>void;onEsd:()=>void;onReset:()=>void;
+ circuit?:FuelCircuitState;derivedCircuit?:FuelCircuitDerived;onCircuitCommand?:(command:FuelCircuitCommand)=>void;
 }
-
-const WIDTH = 1280;
-const HEIGHT = 800;
-const palette = {
-  background: '#303034',
-  panel: '#514d55',
-  border: '#aaa3af',
-  text: '#eee9ef',
-  muted: '#c2bac7',
-  green: '#8af000',
-  magenta: '#d761db',
-  liquid: '#df8b46',
-  gas: '#e8df36',
-  trip: '#ff7070',
-};
-
-function numberText(value: number | undefined, digits: number, unit: string) {
-  return value === undefined || !Number.isFinite(value)
-    ? '—'
-    : `${value.toFixed(digits)} ${unit}`;
+const WIDTH=1280,HEIGHT=800;
+const aggregate:[EquipmentKey,string,string][]=[['pump','Fuel pump route','Toggle fuel pump'],['compressor','BOG compressor route','Toggle BOG compressor'],['vaporizer','LNG vaporizer route','Toggle LNG vaporizer'],['gasValve','Gas delivery valve','Toggle gas valve'],['consumer','Gas consumer demand','Toggle gas consumer'],['bunkering','Bunker transfer','Toggle bunkering'],['vent','Tank vent','Toggle tank vent']];
+export function ShipDiagram({manual,values,equipment,esdLatched,onToggle,onEsd,onReset,circuit,derivedCircuit,onCircuitCommand}:ShipDiagramProps){
+ const[viewport,setViewport]=useState({width:WIDTH,height:HEIGHT}),[zoom,setZoom]=useState(1),[pane,setPane]=useState<DiagramPane>('fuel');
+ const[selected,setSelected]=useState<string|null>(null),[controls,setControls]=useState(false);
+ const horizontal=useRef<ScrollView>(null),vertical=useRef<ScrollView>(null),offset=useRef({x:0,y:0}),pending=useRef<{x:number;y:number}|null>(null);
+ const fit=Math.max(.01,Math.min(viewport.width/WIDTH,viewport.height/HEIGHT)),scale=fit*zoom,cw=WIDTH*scale,ch=HEIGHT*scale;
+ useEffect(()=>{const p=pending.current;if(!p)return;pending.current=null;const id=requestAnimationFrame(()=>{horizontal.current?.scrollTo({x:p.x,animated:false});vertical.current?.scrollTo({y:p.y,animated:false});});return()=>cancelAnimationFrame(id);},[zoom,viewport.width,viewport.height]);
+ function fitDiagram(){pending.current={x:0,y:0};offset.current={x:0,y:0};setZoom(1);horizontal.current?.scrollTo({x:0,animated:false});vertical.current?.scrollTo({y:0,animated:false});}
+ function changeZoom(multiplier:number){const next=Math.max(1,Math.min(6,zoom*multiplier));if(next===zoom)return;const width=WIDTH*fit*next,height=HEIGHT*fit*next;const x=(offset.current.x+viewport.width/2-Math.max(0,(viewport.width-cw)/2))/cw,y=(offset.current.y+viewport.height/2-Math.max(0,(viewport.height-ch)/2))/ch;pending.current={x:Math.max(0,Math.min(width-viewport.width,x*width-viewport.width/2)),y:Math.max(0,Math.min(height-viewport.height,y*height-viewport.height/2))};setZoom(next);}
+ function measure(e:LayoutChangeEvent){const {width,height}=e.nativeEvent.layout;if(width<=0||height<=0||(Math.abs(width-viewport.width)<.5&&Math.abs(height-viewport.height)<.5))return;pending.current={x:0,y:0};offset.current={x:0,y:0};setZoom(1);setViewport({width,height});}
+ function scroll(axis:'x'|'y',e:NativeSyntheticEvent<NativeScrollEvent>){offset.current={...offset.current,[axis]:axis==='x'?e.nativeEvent.contentOffset.x:e.nativeEvent.contentOffset.y};}
+ function state(id:string):boolean|undefined{return !manual&&circuit&&id in circuit.commands?circuit.commands[id as CircuitControlKey]:undefined;}
+ function allocation(id:string):number|undefined{if(manual||!derivedCircuit)return;const f=derivedCircuit.flows,base=id.replace(/Isolation$|Shutoff$/,'');if(base in f.pumps)return f.pumps[base as keyof typeof f.pumps];if(base in f.compressors)return f.compressors[base as keyof typeof f.compressors];if(base in f.vaporizers)return f.vaporizers[base as keyof typeof f.vaporizers];if(id==='meGasValve'||id==='me')return f.delivery.me;if(id==='aeGasValve'||id==='ae')return f.delivery.ae;if(id==='portBunker')return f.bunkering.port;if(id==='starboardBunker')return f.bunkering.starboard;return;}
+ function flowing(id:string){if(manual||!derivedCircuit)return false;const f=derivedCircuit.flows;if(id==='pump')return Object.values(f.pumps).some(n=>n>0);if(id==='bog')return Object.values(f.compressors).some(n=>n>0);if(id==='bunker')return f.bunkering.port+f.bunkering.starboard>0;return (allocation(id)??0)>0;}
+ const symbols=createSymbols({scale,state,flowing,inspect:setSelected});
+ const inspected=selected?equipmentById[selected]:undefined,selectedState=inspected?state(inspected.control??inspected.id):undefined,selectedFlow=inspected?allocation(inspected.id):undefined;
+ const disabled=manual||esdLatched;
+ function action(title:string,onPress:()=>void,off=false,active=false){return <Pressable key={title} accessibilityRole="button" accessibilityLabel={title} accessibilityState={{disabled:off,selected:active}} disabled={off} onPress={onPress} style={[s.button,title==='Activate emergency shutdown'&&{backgroundColor:'#853c4e'},active&&s.active,off&&s.disabled]}><Text style={s.buttonText}>{title}</Text></Pressable>;}
+ return <View style={s.root}>
+  <View style={s.tabs}>{(Object.keys(paneNames) as DiagramPane[]).map(key=>action(paneNames[key],()=>{setPane(key);fitDiagram();},false,pane===key))}{action('Plant controls',()=>setControls(true))}</View>
+  <View style={s.tools}>
+   {action('Zoom out',()=>changeZoom(1/1.3),zoom<=1)}{action('Zoom in',()=>changeZoom(1.3),zoom>=6)}{action('Fit diagram',fitDiagram)}
+   <Text style={s.small}>{Math.round(zoom*100)}% · scroll to pan</Text>
+   <Text style={[s.status,{color:manual?c.muted:esdLatched?'#ff9191':c.green}]}>{manual?'MANUAL OBSERVATIONS':esdLatched?'ESD LATCHED':'ESD NORMAL'}</Text>
+  </View>
+  <View testID="diagram-viewport" onLayout={measure} style={s.viewport}>
+   <ScrollView ref={horizontal} horizontal nestedScrollEnabled bounces={false} style={{flex:1}} contentContainerStyle={{minWidth:viewport.width}} onScroll={e=>scroll('x',e)} scrollEventThrottle={16} showsHorizontalScrollIndicator={cw>viewport.width+1}>
+    <ScrollView ref={vertical} nestedScrollEnabled bounces={false} style={{width:Math.max(viewport.width,cw),height:viewport.height}} contentContainerStyle={{height:Math.max(viewport.height,ch),alignItems:'center',justifyContent:'center'}} onScroll={e=>scroll('y',e)} scrollEventThrottle={16} showsVerticalScrollIndicator={ch>viewport.height+1}>
+     <View testID="ship-diagram-canvas" style={{width:cw,height:ch,backgroundColor:c.background,overflow:'hidden'}}>
+      <View pointerEvents="none" style={{...symbols.frame(0,0,WIDTH,28),backgroundColor:'#858287'}}/>
+      {symbols.label('Automation · CMA CGM BELEM',15,5,500,12)}
+      {symbols.label(manual?'MANUAL · observed values only':'TRAINING · source-connected routes',760,5,500,12,manual?c.muted:c.green,'right')}
+      {renderPane(pane,symbols,values,manual,manual?undefined:derivedCircuit)}
+     </View>
+    </ScrollView>
+   </ScrollView>
+  </View>
+  <View style={s.footer}>
+   <Text style={s.small}>Orange liquid · yellow gas · green request on/open · magenta off/closed · grey unknown</Text>
+   {action('Activate emergency shutdown',onEsd,manual||esdLatched)}{action('Reset emergency shutdown',onReset,manual||!esdLatched)}
+  </View>
+  <Modal visible={!!inspected} transparent animationType="fade" onRequestClose={()=>setSelected(null)}>
+   <View style={s.shade}><View testID="equipment-inspector" style={s.sheet}>
+    <View style={s.sheetHeader}><Text style={s.heading}>{inspected?.tag}</Text>{action('Close inspector',()=>setSelected(null))}</View>
+    <ScrollView style={{flexShrink:1}} contentContainerStyle={{padding:16}}>
+     <Text style={s.title}>{inspected?.title}</Text><Text style={s.body}>{inspected?.detail}</Text>
+     <Text style={s.source}>Source: {inspected?.source}</Text>
+     <Text style={s.body}>Command: {selectedState===undefined?'NOT RECORDED / NOT MODELED':selectedState?'ON / OPEN':'OFF / CLOSED'}</Text>
+     {selectedFlow!==undefined&&<Text testID="branch-flow" style={s.flow}>Training allocation: {selectedFlow.toFixed(3)} kg/h</Text>}
+     {inspected?.control&&<Text style={s.body}>A start/open request does not guarantee flow. Required isolations, a connected route, pressure and inventory must permit transfer. Values are model allocations; individual instrument feedback is unknown.</Text>}
+     {!inspected?.control&&<Text style={s.body}>Reference view only: this component has no independent operating model or measured feedback.</Text>}
+    </ScrollView>
+    <View style={s.sheetActions}>{inspected?.control&&action(`Toggle ${inspected.tag}`,()=>onCircuitCommand?.({type:'circuit-toggle',control:inspected.control!}),disabled||!onCircuitCommand)}{manual&&<Text style={s.small}>Manual observations are read-only.</Text>}</View>
+   </View></View>
+  </Modal>
+  <Modal visible={controls} transparent animationType="fade" onRequestClose={()=>setControls(false)}>
+   <View style={s.shade}><View testID="plant-controls" style={s.sheet}>
+    <View style={s.sheetHeader}><Text style={s.heading}>FGSS PLANT CONTROL</Text>{action('Close controls',()=>setControls(false))}</View>
+    <ScrollView style={{flexShrink:1}} contentContainerStyle={{padding:14}}>
+     <Text style={s.body}>Training route presets · selected individual branches appear on the mimic. Aggregate ON opens one representative route. OFF stops that equipment group.</Text>
+     <View style={s.controlGrid}>{aggregate.map(([key,title,label])=><Pressable key={key} accessibilityRole="button" accessibilityLabel={label} disabled={disabled} accessibilityState={{disabled}} onPress={()=>onToggle(key)} style={[s.aggregate,disabled&&s.disabled]}><Text style={s.body}>{title}</Text><Text style={{color:manual?c.muted:equipment[key]?c.green:c.magenta,fontWeight:'700'}}>{manual?'NOT RECORDED':equipment[key]?'ON / OPEN':'OFF / CLOSED'}</Text></Pressable>)}</View>
+     <Text style={s.title}>Individual fuel-pump / BOG / vaporizer branches</Text>
+     <View style={s.controlGrid}>{sourceEquipment.filter(e=>e.kind==='machine'&&e.control).map(e=><Pressable key={e.id} accessibilityRole="button" accessibilityLabel={`Branch details ${e.tag}`} onPress={()=>{setControls(false);setSelected(e.id);}} style={s.aggregate}><Text style={s.body}>{e.tag} · {e.title}</Text><Text style={{color:state(e.id)===undefined?c.muted:state(e.id)?c.green:c.magenta}}>{state(e.id)===undefined?'NOT RECORDED':state(e.id)?'START REQUEST ON':'STOPPED'}</Text></Pressable>)}</View>
+     <Text style={s.title}>Circuit routes</Text><View style={s.controlGrid}>{sourceEquipment.filter(e=>e.kind==='route').map(e=>action(e.tag,()=>{setControls(false);setSelected(e.id);} ))}</View>
+     <Text style={s.body}>ME / AE branches share one training-buffer inventory. Bunker station arm valves, vapour-return thermodynamics, glycol utilities and vendor IGPR feedback are reference-only.</Text>
+    </ScrollView>
+   </View></View>
+  </Modal>
+ </View>;
 }
-
-/** A fixed-coordinate training mimic, drawn entirely with native Views and Text. */
-export function ShipDiagram({manual, values, equipment, esdLatched, onToggle, onEsd, onReset}: ShipDiagramProps) {
-  const [viewport, setViewport] = useState({width: WIDTH, height: HEIGHT});
-  const [zoom, setZoom] = useState(1);
-  const horizontal = useRef<ScrollView>(null);
-  const vertical = useRef<ScrollView>(null);
-  const offset = useRef({x: 0, y: 0});
-  const pendingScroll = useRef<{x: number; y: number} | null>(null);
-  const fit = Math.max(0.01, Math.min(viewport.width / WIDTH, viewport.height / HEIGHT));
-  const scale = fit * zoom;
-  const canvasWidth = WIDTH * scale;
-  const canvasHeight = HEIGHT * scale;
-  const actualFlow = !manual && !esdLatched && (values.gasFlowKgh ?? 0) > 0;
-
-  useEffect(() => {
-    const target = pendingScroll.current;
-    if (!target) return;
-    pendingScroll.current = null;
-    const frame = requestAnimationFrame(() => {
-      horizontal.current?.scrollTo({x: target.x, animated: false});
-      vertical.current?.scrollTo({y: target.y, animated: false});
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [zoom, viewport.width, viewport.height]);
-
-  function fitDiagram() {
-    pendingScroll.current = {x: 0, y: 0};
-    offset.current = {x: 0, y: 0};
-    setZoom(1);
-    horizontal.current?.scrollTo({x: 0, animated: false});
-    vertical.current?.scrollTo({y: 0, animated: false});
-  }
-
-  function changeZoom(multiplier: number) {
-    const next = Math.max(1, Math.min(6, zoom * multiplier));
-    if (next === zoom) return;
-    const newWidth = WIDTH * fit * next;
-    const newHeight = HEIGHT * fit * next;
-    const oldLeft = Math.max(0, (viewport.width - canvasWidth) / 2);
-    const oldTop = Math.max(0, (viewport.height - canvasHeight) / 2);
-    const centerX = (offset.current.x + viewport.width / 2 - oldLeft) / canvasWidth;
-    const centerY = (offset.current.y + viewport.height / 2 - oldTop) / canvasHeight;
-    pendingScroll.current = {
-      x: Math.max(0, Math.min(newWidth - viewport.width, centerX * newWidth - viewport.width / 2)),
-      y: Math.max(0, Math.min(newHeight - viewport.height, centerY * newHeight - viewport.height / 2)),
-    };
-    setZoom(next);
-  }
-
-  function measure(event: LayoutChangeEvent) {
-    const {width, height} = event.nativeEvent.layout;
-    if (width <= 0 || height <= 0) return;
-    if (Math.abs(width - viewport.width) < 0.5 && Math.abs(height - viewport.height) < 0.5) return;
-    pendingScroll.current = {x: 0, y: 0};
-    offset.current = {x: 0, y: 0};
-    setZoom(1);
-    setViewport({width, height});
-  }
-
-  function frame(x: number, y: number, width: number, height: number): ViewStyle {
-    return {position: 'absolute', left: x * scale, top: y * scale, width: width * scale, height: height * scale};
-  }
-
-  function caption(text: string, x: number, y: number, width: number, size = 13, color = palette.text, align: 'left' | 'center' | 'right' = 'left') {
-    return <Text style={{...frame(x, y, width, size * 1.7), color, fontSize: size * scale, fontWeight: '600', textAlign: align}}>{text}</Text>;
-  }
-
-  function pipe(points: [number, number][], medium: 'liquid' | 'gas', flowing = false) {
-    const color = medium === 'liquid' ? palette.liquid : palette.gas;
-    return <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-      {points.slice(1).map(([endX, endY], index) => {
-        const [startX, startY] = points[index];
-        const horizontalLine = startY === endY;
-        return <View key={index} style={{
-          ...frame(Math.min(startX, endX), Math.min(startY, endY), horizontalLine ? Math.abs(endX - startX) : 2.5, horizontalLine ? 2.5 : Math.abs(endY - startY)),
-          backgroundColor: color,
-          opacity: flowing ? 1 : 0.68,
-        }}/>;
-      })}
-    </View>;
-  }
-
-  function readout(label: string, value: number | undefined, unit: string, x: number, y: number, width: number, digits = 1) {
-    return <View style={{...frame(x, y, width, 55), backgroundColor: '#363238', borderColor: '#716a77', borderWidth: Math.max(0.5, scale)}}>
-      <Text style={{color: palette.muted, fontSize: 11 * scale, textAlign: 'center', marginTop: 5 * scale}}>{label}</Text>
-      <Text style={{color: palette.text, fontSize: 17 * scale, fontWeight: '700', textAlign: 'center', marginTop: 5 * scale}}>{numberText(value, digits, unit)}</Text>
-    </View>;
-  }
-
-  function device(key: DiagramEquipmentKey, title: string, label: string, x: number, y: number, width: number, height: number, round = false) {
-    const disabled = manual || esdLatched;
-    const enabled = !manual && !esdLatched && equipment[key];
-    const stateColor = manual ? palette.muted : enabled ? palette.green : palette.magenta;
-    const status = manual ? 'NOT RECORDED' : key === 'gasValve' || key === 'vent' ? enabled ? 'OPEN' : 'CLOSED' : enabled ? 'ON' : 'OFF';
-    return <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{disabled, selected: manual ? undefined : enabled}}
-      disabled={disabled}
-      onPress={() => onToggle(key)}
-      hitSlop={6}
-      style={{...frame(x, y, width, height), borderRadius: (round ? 22 : 3) * scale, backgroundColor: palette.panel, borderColor: stateColor, borderWidth: Math.max(1, 1.5 * scale), opacity: disabled ? 0.6 : 1}}>
-      <View pointerEvents="none" style={{position: 'absolute', left: 10 * scale, top: 17 * scale, width: 24 * scale, height: 24 * scale, borderRadius: 12 * scale, borderWidth: Math.max(1, 2 * scale), borderColor: stateColor}}/>
-      <Text style={{position: 'absolute', left: 42 * scale, right: 6 * scale, top: 14 * scale, color: palette.text, fontSize: 12 * scale, fontWeight: '700'}}>{title}</Text>
-      <Text style={{position: 'absolute', left: 42 * scale, right: 6 * scale, bottom: 13 * scale, color: stateColor, fontSize: 11 * scale, fontWeight: '700'}}>{status}</Text>
-    </Pressable>;
-  }
-
-  function scrollPosition(axis: 'x' | 'y', event: NativeSyntheticEvent<NativeScrollEvent>) {
-    const value = axis === 'x' ? event.nativeEvent.contentOffset.x : event.nativeEvent.contentOffset.y;
-    offset.current = {...offset.current, [axis]: value};
-  }
-
-  return <View style={styles.root}>
-    <View style={styles.tools}>
-      <Text style={styles.toolsLabel}>MIMIC VIEW</Text>
-      <Pressable accessibilityRole="button" accessibilityLabel="Zoom out" disabled={zoom <= 1} onPress={() => changeZoom(1 / 1.3)} style={[styles.tool, zoom <= 1 && styles.disabled]}><Text style={styles.toolText}>−</Text></Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel="Zoom in" disabled={zoom >= 6} onPress={() => changeZoom(1.3)} style={[styles.tool, zoom >= 6 && styles.disabled]}><Text style={styles.toolText}>+</Text></Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel="Fit diagram" onPress={fitDiagram} style={styles.tool}><Text style={styles.toolText}>Fit</Text></Pressable>
-      <Text style={styles.zoom}>{Math.round(zoom * 100)}% · drag to pan</Text>
-    </View>
-    <View testID="diagram-viewport" onLayout={measure} style={styles.viewport}>
-      <ScrollView
-        ref={horizontal}
-        horizontal
-        nestedScrollEnabled
-        bounces={false}
-        style={styles.scroll}
-        contentContainerStyle={{minWidth: viewport.width}}
-        onScroll={event => scrollPosition('x', event)}
-        scrollEventThrottle={16}
-        showsHorizontalScrollIndicator={canvasWidth > viewport.width + 1}>
-        <ScrollView
-          ref={vertical}
-          nestedScrollEnabled
-          bounces={false}
-          style={{width: Math.max(viewport.width, canvasWidth), height: viewport.height}}
-          contentContainerStyle={{height: Math.max(viewport.height, canvasHeight), alignItems: 'center', justifyContent: 'center'}}
-          onScroll={event => scrollPosition('y', event)}
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={canvasHeight > viewport.height + 1}>
-          <View testID="ship-diagram-canvas" style={{width: canvasWidth, height: canvasHeight, backgroundColor: palette.background, overflow: 'hidden'}}>
-            <View style={{...frame(0, 0, WIDTH, 31), backgroundColor: '#807883'}}/>
-            {caption('Automation · CMA CGM BELEM', 15, 7, 450, 13)}
-            {caption(manual ? 'MANUAL OBSERVATIONS' : 'FUEL SYSTEM SIMULATOR', 880, 7, 380, 12, manual ? palette.muted : palette.green, 'right')}
-            {caption('FGSS OVERVIEW', 450, 49, 400, 23, palette.green, 'center')}
-
-            {pipe([[158, 205], [158, 480]], 'liquid', !manual && equipment.bunkering)}
-            {pipe([[300, 480], [300, 330], [460, 330]], 'gas', actualFlow && equipment.compressor)}
-            {pipe([[300, 415], [387, 415], [387, 150]], 'gas', !manual && equipment.vent)}
-            {pipe([[380, 580], [425, 580]], 'liquid', !manual && equipment.pump)}
-            {pipe([[550, 580], [620, 580]], 'liquid', actualFlow && equipment.pump && equipment.vaporizer)}
-            {pipe([[610, 330], [900, 330]], 'gas', actualFlow && equipment.compressor)}
-            {pipe([[775, 580], [825, 580], [825, 330]], 'gas', actualFlow && equipment.pump && equipment.vaporizer)}
-            {pipe([[1050, 330], [1090, 330]], 'gas', actualFlow)}
-            {pipe([[1225, 330], [1250, 330], [1250, 530], [1225, 530]], 'gas', actualFlow)}
-            <View pointerEvents="none" style={{...frame(820, 325, 12, 12), backgroundColor: palette.gas, borderRadius: 6 * scale}}/>
-
-            {device('bunkering', 'BUNKERING', 'Toggle bunkering', 60, 130, 195, 75)}
-            {device('vent', 'TANK VENT', 'Toggle tank vent', 325, 75, 125, 75)}
-            {caption('VENT MAST', 330, 165, 120, 11, palette.muted, 'center')}
-            {caption('LNG FILLING', 60, 305, 145, 12, palette.liquid)}
-            {caption('BOG / VAPOUR', 318, 350, 165, 12, palette.gas)}
-            {caption('LIQUID FUEL', 415, 638, 155, 12, palette.liquid)}
-            {device('compressor', 'BOG COMPRESSOR', 'Toggle BOG compressor', 460, 280, 150, 100)}
-            {device('pump', 'FUEL PUMP', 'Toggle fuel pump', 425, 540, 125, 80)}
-            {device('vaporizer', 'LNG VAPORIZER', 'Toggle LNG vaporizer', 620, 530, 155, 100, true)}
-            {device('gasValve', 'GAS VALVE', 'Toggle gas valve', 1090, 295, 135, 70)}
-            {device('consumer', 'GAS CONSUMER', 'Toggle gas consumer', 1075, 480, 150, 100)}
-
-            <View style={{...frame(80, 480, 300, 210), backgroundColor: '#736d78', borderColor: '#c4bccb', borderWidth: Math.max(1, 2 * scale), borderRadius: 5 * scale}}/>
-            {caption('LNG FUEL TANK', 95, 497, 270, 18, palette.text, 'center')}
-            {readout('Tank pressure', values.tankPressureBarg, 'bar(g)', 95, 538, 130, 3)}
-            {readout('Liquid volume', values.tankVolumeM3, 'm³', 235, 538, 130, 0)}
-            {readout('LNG temperature', values.temperatureC, '°C', 95, 605, 270, 1)}
-
-            <View style={{...frame(900, 250, 150, 160), backgroundColor: '#b2aab8', borderColor: '#e5dcea', borderWidth: Math.max(1, 2 * scale), borderRadius: 32 * scale}}/>
-            {caption('ME BUFFER', 910, 275, 130, 15, '#353039', 'center')}
-            {readout('Buffer pressure', values.bufferPressureBarg, 'bar(g)', 913, 325, 124, 2)}
-            {readout('Gas delivery', values.gasFlowKgh, 'kg/h', 890, 437, 170, 0)}
-
-            <View style={{...frame(875, 85, 360, 115), backgroundColor: '#444047', borderColor: '#827987', borderWidth: Math.max(0.5, scale)}}/>
-            {caption(manual ? 'OBSERVATION MODE' : esdLatched ? 'ESD LATCHED' : 'ESD NORMAL', 890, 96, 330, 14, manual ? palette.muted : esdLatched ? palette.trip : palette.green, 'center')}
-            <Pressable accessibilityRole="button" accessibilityLabel="Activate emergency shutdown" accessibilityState={{disabled: manual || esdLatched}} disabled={manual || esdLatched} onPress={onEsd} style={{...frame(890, 135, 183, 45), backgroundColor: manual ? '#665e69' : '#813c48', borderColor: '#c1a2ac', borderWidth: Math.max(1, scale), justifyContent: 'center', alignItems: 'center', opacity: manual || esdLatched ? 0.55 : 1}}><Text style={{fontSize: 13 * scale, fontWeight: '700', color: palette.text}}>EMERGENCY STOP</Text></Pressable>
-            <Pressable accessibilityRole="button" accessibilityLabel="Reset emergency shutdown" accessibilityState={{disabled: manual || !esdLatched}} disabled={manual || !esdLatched} onPress={onReset} style={{...frame(1087, 135, 133, 45), backgroundColor: '#77707d', borderColor: palette.border, borderWidth: Math.max(1, scale), justifyContent: 'center', alignItems: 'center', opacity: manual || !esdLatched ? 0.55 : 1}}><Text style={{fontSize: 13 * scale, fontWeight: '700', color: palette.text}}>RESET ESD</Text></Pressable>
-
-            <View style={{...frame(35, 735, 1210, 40), borderTopWidth: Math.max(0.5, scale), borderTopColor: '#77717c'}}/>
-            {caption('Rebuilt training diagram', 45, 747, 380, 14, palette.muted)}
-            {caption(manual ? 'Equipment controls disabled · unknown readings: —' : 'Orange: liquid  ·  Yellow: gas  ·  Green: on/open  ·  Magenta: off/closed', 430, 748, 805, 12, palette.muted, 'right')}
-          </View>
-        </ScrollView>
-      </ScrollView>
-    </View>
-  </View>;
-}
-
-const styles = StyleSheet.create({
-  root: {flex: 1, minHeight: 220, backgroundColor: '#242227'},
-  tools: {minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 7, paddingHorizontal: 8, paddingVertical: 4, backgroundColor: '#47414b'},
-  toolsLabel: {fontSize: 10, fontWeight: '700', color: '#d6cddc'},
-  tool: {minWidth: 38, minHeight: 34, paddingHorizontal: 11, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#aaa1b1', backgroundColor: '#6d6475'},
-  toolText: {color: '#fff', fontSize: 16, fontWeight: '700'},
-  zoom: {flex: 1, fontSize: 11, color: '#d4cadb'},
-  disabled: {opacity: 0.45},
-  viewport: {flex: 1, overflow: 'hidden', backgroundColor: '#1d1b20'},
-  scroll: {flex: 1},
-});
+const s=StyleSheet.create({root:{flex:1,minHeight:220,backgroundColor:'#292a2c'},tabs:{flexDirection:'row',flexWrap:'wrap',gap:5,padding:6,backgroundColor:'#666168'},tools:{flexDirection:'row',flexWrap:'wrap',gap:5,padding:5,alignItems:'center',backgroundColor:'#4b4a50'},button:{minHeight:38,minWidth:44,paddingHorizontal:10,paddingVertical:8,justifyContent:'center',alignItems:'center',backgroundColor:'#686773',borderWidth:1,borderColor:'#aaa6b1'},buttonText:{color:'#fff',fontSize:11,fontWeight:'600'},active:{backgroundColor:'#48632f'},disabled:{opacity:.45},small:{color:c.muted,fontSize:10,lineHeight:16},status:{fontSize:11,fontWeight:'700',marginLeft:'auto'},viewport:{flex:1,overflow:'hidden',backgroundColor:'#242528'},footer:{padding:6,flexDirection:'row',flexWrap:'wrap',gap:6,alignItems:'center',backgroundColor:'#424146'},shade:{flex:1,backgroundColor:'#0009',padding:14,justifyContent:'center',alignItems:'center'},sheet:{width:'100%',maxWidth:650,maxHeight:'88%',backgroundColor:'#46464c',borderWidth:1,borderColor:'#c2bdc7'},sheetHeader:{padding:10,flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8,borderBottomWidth:1,borderColor:'#939099'},heading:{fontSize:16,fontWeight:'700',color:c.green,flexShrink:1},title:{fontSize:15,fontWeight:'700',color:'#eee',marginVertical:10},body:{fontSize:13,color:'#eee',lineHeight:20,marginBottom:10},source:{fontSize:12,color:'#cbd8b0',lineHeight:20,marginBottom:16},sheetActions:{padding:12,borderTopWidth:1,borderColor:'#939099',gap:6},flow:{fontSize:18,color:c.green,fontWeight:'700',marginBottom:14},controlGrid:{flexDirection:'row',flexWrap:'wrap',gap:8,marginBottom:15},aggregate:{minWidth:180,flexGrow:1,padding:12,borderWidth:1,borderColor:'#96929c',backgroundColor:'#38383c'}});

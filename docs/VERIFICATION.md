@@ -1,4 +1,6 @@
-# Verification record
+# Verification record — retained 0.4 release
+
+Version 0.5 diagram-change results are recorded in [STATUS.md](STATUS.md) and `docs/evidence/v0.5.0/`. The hashes/counts below intentionally remain pinned to the earlier 0.4 candidate.
 
 Evidence snapshot: 2026-10-25, version 0.4.0. These results belong to the commits and files below; they do not automatically validate later edits. **Android runtime testing has NOT RUN.** Start device work with [NATIVE_QA.md](NATIVE_QA.md).
 

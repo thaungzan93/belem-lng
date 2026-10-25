@@ -1,6 +1,6 @@
 # Source references and recovery register
 
-The owner authorizes sharing the app's working context and reference files with collaborators in this **private repository**. Large original archives are stored in a private reference release, with a small searchable inventory in Git. Keep account credentials and private signing keys outside both source and reference releases.
+The owner authorizes sharing the app's working context and reference files with collaborators in this **private repository**. The large Drive bundle is stored in a private reference release, with a searchable inventory in Git. The owner also explicitly authorized the six original HMI JPEGs and original `06.zip` in private Git; their locations and limits are recorded below. Keep account credentials and private signing keys outside both source and reference releases.
 
 ## Recovered on 2026-10-25
 
@@ -32,6 +32,14 @@ gh release download references-2026-10-25 --repo thaungzan93/belem-lng --dir ref
 
 Verify the supplied checksum file before extraction. If a managed environment cannot follow GitHub's asset redirect, use the authenticated GitHub download tool or browser; do not make the repo public or disable its proxy/TLS settings. The original Drive URL is also preserved for recovery.
 
+## Separately supplied original uploads recovered on 2026-10-25
+
+The six original JPEG files (suffixes 1036, 1023, 988, 961, 962 and 1589) are now preserved in [`docs/hmi-photos/`](hmi-photos/) as byte-for-byte copies, with the original filenames after removing the transport's leading numeric ordinal. They show Power Management Overview; Bunker Station; a split Fuel Tank/Bunker Station display; FGSS with Plant Control; iGPR Overview; and Plant Control over the Cold Glycol and Compressor System. These are perspective photographs of physical monitors, **not digital HMI exports or editable HMI projects**. The [photo manifest](hmi-photo-manifest.json) records stable source IDs, SHA-256 hashes, bytes, dimensions and limitations.
+
+The original [`06.zip`](../reference-material/bunkering/06.zip) is also now preserved in private Git: **7,914,347 bytes**, SHA-256 `f9f3fa4aacf801f48a51cd73eb0fa2e9864cb45b9e61af51942505f51140552c`. Its CRC integrity check passed. It contains Shanghai LNG bunkering records under `06. LNG Bunker Shanghai 09-Jan-2026/`: four PDFs (24 pages total), two MSG files, one BELEM cooldown/bunkering XLSX workbook and one CMA CGM 13K-series joint-plan DOCX. This is a bunkering record set, not an HMI export. The [upload register](REFERENCE_UPLOADS.md) describes each file and the [reference manifest](reference-manifest.json) records every member hash and PDF page count.
+
+Photo states and recorded operational readings do not by themselves establish commissioned settings, complete routes or approved control logic. The email files and Office active content were not executed; limited content inspection does not validate workbook formulas or message attachments. Keep these original bytes unchanged and label any later crop, rectification or annotation as a derived artifact.
+
 ## First documents to inspect for implementation
 
 Use exact paths from the inventory; these are filename identifiers, not a claim that source behavior has been transcribed.
@@ -52,8 +60,6 @@ The five separately named structural PDFs from the original chat were found insi
 
 ## Still unavailable
 
-- The separately uploaded `06.zip`: its contents/relationship to the recovered bundle are unverified.
-- Original local files for six ship-HMI photographs (suffixes 1036, 1023, 988, 961, 962 and 1589). Conversation previews are not original HMI exports.
 - Original digital HMI project/screens/fonts and commissioned installed-setting records, where not established by reviewed source pages.
 - The earlier 0.3.x editable app source and private signing key. The signing key must be recovered/stored privately, never uploaded with references.
 
@@ -61,4 +67,4 @@ The five separately named structural PDFs from the original chat were found insi
 
 For every adopted tag, connection, capacity, curve, threshold or sequence, record: archive/member SHA, document number/title, revision, page/diagram sheet, unit, vessel/equipment applicability, extracted value/rule, and whether installed commissioning data confirms it. Preserve conflicting revisions instead of silently choosing one. Add an executable behavior/conservation check appropriate to that rule. General theory and filename hints do not establish a commissioned BELEM value.
 
-No model settings, control logic or HMI geometry were changed as part of this handover/recovery task. The candidate APK predates recovery; its model/source-status text describes that earlier checkpoint.
+Reference archival and inventory alone do not validate model settings, control logic or HMI geometry. The candidate APK predates recovery; its model/source-status text describes that earlier checkpoint.

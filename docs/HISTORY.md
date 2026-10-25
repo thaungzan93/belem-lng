@@ -31,3 +31,5 @@ If recovered, inventory the archive and separate source/reference material from 
 Version 0.4.0 is a new implementation. Commit `57cbc90` introduced the executable rebuild; `db31cd0` is the successfully CI-built APK source. `5d1e353` added the tested private-release packaging/upload workflow and is the source snapshot packaged in candidate.1. Later handover-only commits do not add the old operating cases or establish ship calibration. See VERIFICATION.md for actual current evidence.
 
 On 2026-10-25 the owner's Drive reference bundle was recovered. Its outer GTT training PDF and nested H1843/FGSS archives include 100 PDF file entries overall, including the five structural PDFs named earlier. The earlier missing-reference statements describe the pre-recovery checkpoint. The old executable app source/key and original HMI files were not recovered by this download; see REFERENCES.md for the current register.
+
+The owner later re-uploaded all six original HMI JPEGs and `06.zip` for the 0.5.0 diagram repair. They are now preserved privately; REFERENCES.md and REFERENCE_UPLOADS.md supersede earlier missing-photo/06 statements.

@@ -10,7 +10,7 @@ The owner wants Codex, Antigravity and other AI tools to share the same GitHub p
 
 ## Essential distinction
 
-The runnable application is **version 0.4.0, a rebuild**. The old source and signing key were lost from the execution workspace. Historical reports of 14 HMI screens, 37 operating cases, electrical coupling or 124 tests do **not** establish features in this tree. The present implementation has a smaller training fuel model, one scalable diagram and a manual watch log. [HISTORY.md](HISTORY.md) records the old context without treating it as current evidence.
+The runnable application is **version 0.5.0, a rebuild**. The old source and signing key were lost from the execution workspace. Historical reports of 14 HMI screens, 37 operating cases, electrical coupling or 124 tests do **not** establish features in this tree. The present implementation has a smaller training fuel model, a source-connected branch wrapper, three scalable diagram panels and a manual watch log. [HISTORY.md](HISTORY.md) records the old context without treating it as current evidence.
 
 The currently distributed APK is a development-signed candidate. Build/static checks and browser workflows passed; Android device behavior and BELEM-specific model/UI fidelity remain unverified. Do not report the entire original product as complete.
 
@@ -55,14 +55,14 @@ On Linux without browser dependencies, use `npx playwright install --with-deps c
 ## Where to resume
 
 1. Run the current APK through [NATIVE_QA.md](NATIVE_QA.md) on a representative Android device. Record actual device/API/ABI, APK SHA, steps and logs. Browser success does not answer this task.
-2. Review the recovered H1843/FGSS PDFs using [REFERENCES.md](REFERENCES.md), and recover the remaining missing HMI photos/exports and `06.zip`. Only the GTT training PDF is general background; the nested ship/OEM documents need their own revision and applicability review before use as BELEM settings.
+2. Review the recovered H1843/FGSS PDFs using [REFERENCES.md](REFERENCES.md), and review the re-uploaded HMI photographs and `06.zip` recorded in REFERENCE_UPLOADS.md. Editable digital HMI exports are still unavailable. Only the GTT training PDF is general background; the nested ship/OEM documents need their own revision and applicability review before use as BELEM settings.
 3. Reconstruct one source HMI panel and its equipment/line/tag mapping at a time. Cite document revision and page for each confirmed parameter or behavior. Preserve fit/zoom/pan and native responsiveness.
 4. Expand thermodynamics and equipment behavior in separately validated modules. Document input composition, validity range, units and conservation checks. Keep assumed defaults labelled until references establish vessel values.
 5. Add electrical/utility coupling and other daily-engineer modules after the LNG core, following the owner's scope.
 
 If a device or the relevant document is unavailable, a bounded independent task is simulator-state backup/restore using a **new schema/storage key**, separate from manual observations. This is proposed work, not an existing feature. Acceptance: round-trip the full state/config/ledger, reject malformed or non-finite values without changing the current plant, keep watch records untouched, and define whether run/pause state survives restoration. Follow TASKS.md before starting so two assistants do not take the same task.
 
-The published candidate's Model/status screen predates the 2026-10-25 reference recovery. Its missing-files message is historical; the recovered PDFs have not yet been reconciled with the model and no application behavior was changed by adding this handover.
+Candidate.1 (0.4.0) predates reference recovery and has historical missing-files text. Version 0.5.0 updates that status and reconstructs line geometry/connectivity; rates, thermodynamics and commissioned protection settings remain training assumptions. See DIAGRAM_SOURCES.md.
 
 ## Protect behavior already implemented
 
@@ -82,7 +82,7 @@ Finish one bounded change, run relevant checks, commit it and push the branch. U
 ```text
 Work on the private repository https://github.com/thaungzan93/belem-lng.
 Read AGENTS.md, docs/HANDOVER.md, docs/STATUS.md and docs/TASKS.md first.
-This is the 0.4.0 rebuild; historical old-app features are not current code.
+This is the 0.5.0 rebuild; historical old-app features are not current code.
 Pick one unclaimed bounded task, create a branch, inspect its actual source,
 implement and run relevant checks, then update the handover/task status and
 push a reviewable commit/PR. Preserve manual-vs-simulator separation and
