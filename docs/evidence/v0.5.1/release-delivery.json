@@ -1,0 +1,27 @@
+{
+  "tag": "v0.5.1-candidate.1",
+  "url": "https://github.com/thaungzan93/belem-lng/releases/tag/v0.5.1-candidate.1",
+  "appSourceCommit": "b28b8a47b097b21f49f2bf1d557c7295e0c3a771",
+  "packagedSourceCommit": "75ed0495f0e0b2e17414d7c72c395c0e58f78316",
+  "sourceChecksRun": 40210786228,
+  "androidRun": 40210787472,
+  "publicationRun": 40217548835,
+  "assets": [
+    {
+      "file": "belem-lng-v0.5.1-candidate.apk",
+      "bytes": 57757788,
+      "sha256": "0a1d238d2cf42b9e280301b9dce5149230bc6d0ac93321551c6163e2f51c2e59"
+    },
+    {
+      "file": "belem-lng-v0.5.1-all.zip",
+      "bytes": 44196478,
+      "sha256": "c5a5ee32e52a43250736f9d6c4c0c1dd17f998828fc5b96289784ca782d3776c"
+    },
+    {
+      "file": "SHA256SUMS.txt",
+      "bytes": 188,
+      "sha256": "571aa26c681b4412efd2f9a42993f67ed572ba90da180675ba27a6dd6338e654"
+    }
+  ],
+  "nativeRuntime": "NOT RUN: no device or hardware virtualization; bounded software-emulator boot timed out before app install/launch"
+}

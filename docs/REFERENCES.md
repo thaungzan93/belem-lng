@@ -67,4 +67,4 @@ The five separately named structural PDFs from the original chat were found insi
 
 For every adopted tag, connection, capacity, curve, threshold or sequence, record: archive/member SHA, document number/title, revision, page/diagram sheet, unit, vessel/equipment applicability, extracted value/rule, and whether installed commissioning data confirms it. Preserve conflicting revisions instead of silently choosing one. Add an executable behavior/conservation check appropriate to that rule. General theory and filename hints do not establish a commissioned BELEM value.
 
-Reference archival and inventory alone do not validate model settings, control logic or HMI geometry. The candidate APK predates recovery; its model/source-status text describes that earlier checkpoint.
+Reference archival and inventory alone do not validate model settings, control logic or HMI geometry. The earlier 0.4 candidate APK predates recovery; its model/source-status text describes that older checkpoint. Current 0.5.1 follows recovery and the source-diagram reconstruction, while the calibration/applicability limits above still apply.
