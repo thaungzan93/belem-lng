@@ -1,6 +1,8 @@
 # GitHub connection and first push
 
-The intended repository is `https://github.com/thaungzan93/belem-lng`. Keep it private and keep original ship documents, credentials, signing keys and generated APKs outside Git history.
+The intended repository is `https://github.com/thaungzan93/belem-lng`. Keep it private. Owner-authorized ship references follow [REFERENCES.md](REFERENCES.md): the six original photos and 06.zip are tracked privately; the large mixed bundle is in the private reference release. Credentials, private signing keys and generated APKs stay outside Git history.
+
+The current repository is configured and has published releases. Each incoming AI/tool needs its own authorized GitHub connection; the instructions below describe connection/recovery, not an unresolved setup blocker. Start a takeover with [TAKEOVER.md](TAKEOVER.md).
 
 ## Authorize the repository
 

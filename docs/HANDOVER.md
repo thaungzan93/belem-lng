@@ -2,6 +2,8 @@
 
 This repository is the durable source of project context. A new assistant does not need the original chat to start working. Read this file, [AGENTS.md](../AGENTS.md), [STATUS.md](STATUS.md) and [TASKS.md](TASKS.md) before changing code.
 
+The final outgoing session is closed in [TAKEOVER.md](TAKEOVER.md), with exact release/ZIP hashes and first next tasks. [CHAT_CONTEXT.md](CHAT_CONTEXT.md) preserves a structured partial chat record and owner decisions. These 2026-10-26 documents are on current main; the published release ZIP is the earlier immutable checkpoint.
+
 ## What the owner wants
 
 An Android-first LNG application for the gas engineer on **CMA CGM BELEM**, with a web version and other ship systems added later. The owner wants both an LNG/fuel-system simulator and manually entered day-to-day observations. The interface should eventually reproduce the ship HMI photographs and source diagrams, with scalable phone/tablet layouts and functioning equipment/routes. Saved observations must open with an Edit action. The owner's word “transactions” refers to these watch records, not an implemented financial module.

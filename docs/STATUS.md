@@ -1,12 +1,14 @@
 # Current checkpoint
 
+**Handover, 2026-10-26:** outgoing implementation work is closed. Continue from [TAKEOVER.md](TAKEOVER.md); [CHAT_CONTEXT.md](CHAT_CONTEXT.md) preserves the visible owner decisions. This transfer changes documentation only; the 0.5.1 APK remains unchanged. Android runtime QA and the remaining model tasks are still open.
+
 Current source is **0.5.1 / Android code 3**. The stage recheck fixed a watch-write/navigation data-loss race, small-screen diagram collapse and inherited-name setting validation. Locked install, TypeScript, all **37** tests, web export and **15** browser groups passed locally. The browser set now covers six desktop/phone/landscape/tablet sizes, delayed write failure/retry, settings/timer behavior and unreadable-storage recovery. Source CI [40210786228](https://github.com/thaungzan93/belem-lng/actions/runs/40210786228) and Android build/static CI [40210787472](https://github.com/thaungzan93/belem-lng/actions/runs/40210787472) passed at `b28b8a47b097b21f49f2bf1d557c7295e0c3a771`. New APK SHA-256: `0a1d238d2cf42b9e280301b9dce5149230bc6d0ac93321551c6163e2f51c2e59`, 57,757,788 bytes. Download identity/CRC, signature and 16 KB ZIP alignment were independently rechecked. Use the [0.5.1 private release](https://github.com/thaungzan93/belem-lng/releases/tag/v0.5.1-candidate.1); the 0.5.0 APK below predates these fixes. Native interactions remain NOT RUN: no connected device/virtualization; the bounded software-emulator boot timed out. See [the recheck record](RECHECK-2026-10-25.md).
 
 ## Retained 0.5.0 diagram checkpoint
 
 Version **0.5.0**, Android code **2**, package `com.belem.lng.rebuild`. This continues the new implementation introduced at 0.4.0; it is not recovered 0.3.x source.
 
-## Diagram fix
+## Retained 0.5.0 diagram fix
 
 - Three native source-style panels: Fuel overview, Bunker stations and ME IGPR, with fit/zoom/pan and equipment inspectors.
 - Four independent pump branches, two BOG compressor branches and two vaporizer branches, with source-tagged isolation/shutoff gates. Closing a branch blocks its calculated transfer; other connected branches can supply the same inventory.
@@ -16,7 +18,7 @@ Version **0.5.0**, Android code **2**, package `com.belem.lng.rebuild`. This con
 
 See [DIAGRAM_SOURCES.md](DIAGRAM_SOURCES.md) for exact reviewed PDF pages, the reconstruction boundary and H1839A-only instrument exclusions. Independent buffer pressure/energy balances, real equipment curves, complete operating cases and commissioned protection settings are not implemented.
 
-## Current local verification
+## Retained 0.5.0 local verification
 
 - Locked dependency installation and strict TypeScript: passed.
 - **37** engine/circuit/logbook tests: passed, no failures/skips.

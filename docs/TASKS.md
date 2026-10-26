@@ -17,8 +17,8 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 
 - [x] Receive the owner's repository URL and configure local origin: `https://github.com/thaungzan93/belem-lng`.
 - [x] Complete GitHub app installation/repository authorization; private visibility and push/admin permission verified.
-- [x] Push the tested checkpoint and verify GitHub source checks (27 tests and 9 browser workflow groups).
-- [x] Run the Android candidate workflow and verify the resulting APK report/artifact at commit db31cd0.
+- [x] Push the tested checkpoint and verify earlier 0.4 GitHub source checks (27 tests and 9 browser workflow groups).
+- [x] Run the Android candidate workflow and verify the earlier 0.4 APK report/artifact at commit db31cd0.
 - [x] Provide a private candidate release with one ZIP containing source, available Git history, web preview, APK and verification reports.
 - [x] Finish the local Android candidate build; retain toolchain, APK hash and passing static verification reports. Native runtime checks remain pending.
 - [ ] Exercise offline launch, simulator controls, saved-record Edit/Cancel/Save, force-stop/reopen and CSV/JSON sharing on Android.
@@ -45,6 +45,9 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 - [ ] Multi-device sync/access control only after a backend is specified; current records are local.
 
 ## Collaboration handover
+
+- [x] Publish the 0.5.1 stage-recheck APK and all-in-one ZIP; source 37-test/15-browser checks and Android build/static checks passed at b28b8a4.
+- [x] Final 2026-10-26 GitHub takeover: release identities/hashes, structured partial chat decision record, remaining blockers and copyable next-AI prompt. See TAKEOVER.md. No coding task is reserved by the outgoing session.
 
 - [x] Add durable cross-AI handover, product/history context, architecture/data contract, native QA plan, evidence snapshots, reference locations and a reusable session template.
 - [ ] After an actual Android device run, fill NATIVE_QA.md results with exact device/APK/commit evidence instead of copying source/browser claims.

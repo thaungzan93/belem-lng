@@ -56,7 +56,7 @@ python3 -m http.server 8080 --directory dist/web
 
 ## Collaborate without losing work
 
-**New AI or developer: start with [the complete handover](docs/HANDOVER.md).** It includes a copyable starter prompt, product decisions, architecture/data documentation, verification evidence, reference locations and next tasks. Read [AGENTS.md](AGENTS.md) before coding. Assign one task and branch per contributor, review pull requests, and keep [STATUS](docs/STATUS.md) and [TASKS](docs/TASKS.md) current. End each session at a tested commit with a concrete next task and explicit blockers. GitHub does not automatically coordinate AI agents.
+**New AI or developer: start with [the complete handover](docs/HANDOVER.md) and [the final takeover checkpoint](docs/TAKEOVER.md).** The [chat decision record](docs/CHAT_CONTEXT.md) preserves the owner's requirements without depending on this chat. The handover documents include a copyable starter prompt, product decisions, architecture/data documentation, verification evidence, reference locations and next tasks. Read [AGENTS.md](AGENTS.md) before coding. Assign one task and branch per contributor, review pull requests, and keep [STATUS](docs/STATUS.md) and [TASKS](docs/TASKS.md) current. End each session at a tested commit with a concrete next task and explicit blockers. GitHub does not automatically coordinate AI agents.
 
 For repository authorization and the first push, see [GitHub setup](docs/GITHUB.md).
 
