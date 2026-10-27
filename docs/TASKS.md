@@ -39,6 +39,7 @@ Pick one bounded task and branch. Update this file and STATUS.md at a tested che
 
 ## Follow-on usability
 
+- [x] Offline debugging infrastructure (branch `debug/diagnostics`, not released): persisted 200-entry debug ring, render-crash recovery screen, settings Diagnostics section with Refresh/Copy/Export/Clear; 11 new tests, 48 total passing, typecheck and web export passing. Android device runtime still unverified.
 - [ ] Validated simulator state backups/restore, separate from watch data.
 - [ ] Source-instrument register and per-tag diagram mapping once original data is recovered.
 - [ ] Measured temperature trends and engineer calculators with clear units/assumptions.

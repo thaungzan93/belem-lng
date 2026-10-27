@@ -1,5 +1,5 @@
 import React,{useEffect,useRef,useState} from 'react';
-import {Pressable,ScrollView,StyleSheet,Text,TextInput,View,useWindowDimensions} from 'react-native';
+import {Platform,Pressable,ScrollView,StyleSheet,Text,TextInput,View,useWindowDimensions} from 'react-native';
 import {SafeAreaProvider,SafeAreaView} from 'react-native-safe-area-context';
 import {StatusBar} from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,6 +10,14 @@ import {ShipDiagram} from './src/components/ShipDiagram';
 import {WatchLog} from './src/components/WatchLog';
 import {deliverFile} from './src/storage/exportFile';
 import config from './app.json';
+import {copyText,DebugLog,formatDiagnostics} from './src/debug/debug';
+import type {DebugRecord,DiagnosticsSnapshot} from './src/debug/debug';
+import {asyncDebugStorage} from './src/debug/storage';
+import {ErrorBoundary} from './src/components/ErrorBoundary';
+import {DiagnosticsPanel} from './src/components/DiagnosticsPanel';
+
+/** Single shared debug log; the panel and the crash boundary read the same ring. */
+const debugLog = new DebugLog(asyncDebugStorage);
 
 const settingFields=[['heatIngressKw','Training heat ingress','kW'],['demandKgh','Training consumer demand','kg/h'],['pumpFlowM3h','Training pump flow','m³/h'],['bunkerFlowM3h','Training bunker flow','m³/h']] as const;
 function Action({title,onPress,disabled=false,active=false}:{title:string;onPress:()=>void;disabled?:boolean;active?:boolean}){
@@ -17,22 +25,31 @@ function Action({title,onPress,disabled=false,active=false}:{title:string;onPres
 }
 function Value({label,value,unit}:{label:string;value:number|undefined;unit:string}){return <View style={s.value}><Text style={s.small}>{label}</Text><Text style={s.reading}>{value===undefined?'—':value.toLocaleString('en',{maximumFractionDigits:3})} <Text style={s.small}>{unit}</Text></Text></View>;}
 export default function App(){
+ return <ErrorBoundary debugLog={debugLog} appVersion={config.expo.version}><AppContent/></ErrorBoundary>;
+}
+function AppContent(){
  const {width}=useWindowDimensions();const[diagramHeight,setDiagramHeight]=useState(600);
  const[plant,setPlant]=useState(createCircuit);const plantRef=useRef(plant);
  const[book,setBook]=useState<Book>({version:1,entries:[]});const[ready,setReady]=useState(false);const[storageError,setStorageError]=useState('');const[rawBackup,setRawBackup]=useState('');
  const[watchSaving,setWatchSaving]=useState(false);const watchWriteInFlight=useRef(false);
  const[manual,setManual]=useState(false);const[running,setRunning]=useState(false);const[screen,setScreen]=useState<'diagram'|'watch'|'settings'>('diagram');const[error,setError]=useState('');
  const[settings,setSettings]=useState(()=>Object.fromEntries(settingFields.map(([key])=>[key,String(plant.cfg[key])])) as Record<typeof settingFields[number][0],string>);
+ const[diagnostics,setDiagnostics]=useState<{snapshot:DiagnosticsSnapshot;records:DebugRecord[]}|null>(null);const[diagBusy,setDiagBusy]=useState(false);const[diagStatus,setDiagStatus]=useState('');const[diagError,setDiagError]=useState('');
+ async function refreshDiagnostics(){setDiagBusy(true);setDiagError('');try{const snapshot=await debugLog.getSnapshot({appVersion:config.expo.version,platform:Platform.OS,watchStorageError:storageError||null,simulator:{running,elapsedSeconds:plant.elapsedSeconds,settings:{heatIngressKw:plant.cfg.heatIngressKw,demandKgh:plant.cfg.demandKgh,pumpFlowM3h:plant.cfg.pumpFlowM3h,bunkerFlowM3h:plant.cfg.bunkerFlowM3h}}});const records=await debugLog.getRecords();setDiagnostics({snapshot,records});}catch(e){setDiagError(e instanceof Error?e.message:String(e));}finally{setDiagBusy(false);}}
+ async function copyDiagnostics(){setDiagError('');setDiagStatus('');try{if(!diagnostics)throw new Error('Refresh diagnostics first');await copyText(formatDiagnostics(diagnostics.snapshot,diagnostics.records));setDiagStatus('Diagnostics copied.');}catch(e){setDiagError(e instanceof Error?e.message:String(e));}}
+ async function exportDiagnostics(){setDiagError('');setDiagStatus('');try{if(!diagnostics)throw new Error('Refresh diagnostics first');await deliverFile(formatDiagnostics(diagnostics.snapshot,diagnostics.records),'belem-lng-diagnostics.json','application/json');setDiagStatus('Diagnostics export prepared.');}catch(e){setDiagError(e instanceof Error?e.message:String(e));}}
+ async function clearDiagnostics(){setDiagError('');setDiagStatus('');await debugLog.clear();await refreshDiagnostics();setDiagStatus('Debug log cleared.');}
  function commit(next:ReturnType<typeof createCircuit>){plantRef.current=next;setPlant(next);}
- async function load(){setReady(false);setStorageError('');let raw:string|null=null;try{raw=await AsyncStorage.getItem(STORAGE_KEY);const next=raw?decodeLogbook(raw):{version:1 as const,entries:[]};setBook(next);setRawBackup('');setReady(true);}catch(e){setRawBackup(raw??'');setStorageError(`Watch storage could not be opened. Existing data has not been overwritten. ${e instanceof Error?e.message:String(e)}`);}}
- useEffect(()=>{void load();},[]);
+ async function load(){setReady(false);setStorageError('');let raw:string|null=null;try{raw=await AsyncStorage.getItem(STORAGE_KEY);const next=raw?decodeLogbook(raw):{version:1 as const,entries:[]};setBook(next);setRawBackup('');setReady(true);void debugLog.record('info','watch-storage','Watch storage opened');}catch(e){void debugLog.recordError('watch-storage',e);setRawBackup(raw??'');setStorageError(`Watch storage could not be opened. Existing data has not been overwritten. ${e instanceof Error?e.message:String(e)}`);}}
+ useEffect(()=>{void debugLog.record('info','lifecycle','App started');void load();},[]);
  async function saveBook(next:Book){
   if(!ready)throw new Error('Watch storage is not ready');
   if(watchWriteInFlight.current)throw new Error('A watch record is still being saved');
   // The ref closes same-tick races; app-level state keeps navigation and all
   // child editors locked until native storage acknowledges the write.
   watchWriteInFlight.current=true;setWatchSaving(true);
-  try{const clean=decodeLogbook(JSON.stringify(next));await AsyncStorage.setItem(STORAGE_KEY,JSON.stringify(clean));setBook(clean);}
+  try{const clean=decodeLogbook(JSON.stringify(next));await AsyncStorage.setItem(STORAGE_KEY,JSON.stringify(clean));setBook(clean);void debugLog.record('info','watch-storage','Watch record saved');}
+  catch(e){void debugLog.recordError('watch-storage',e);throw e;}
   finally{watchWriteInFlight.current=false;setWatchSaving(false);}
  }
  function act(command:PlantCommand|FuelCircuitCommand){if(manual){setError('Switch to Simulator for training controls.');return;}try{commit(commandCircuit(plantRef.current,command));setError('');}catch(e){setError(e instanceof Error?e.message:String(e));}}
@@ -58,6 +75,7 @@ export default function App(){
     <View style={s.panel}><Text style={s.section}>TRAINING SETTINGS · separate from manual observations</Text><View style={s.row}>{settingFields.map(([key,label,unit])=><View key={key} style={s.field}><Text style={s.small}>{label} · {unit}</Text><TextInput accessibilityLabel={label} value={settings[key]} onChangeText={value=>setSettings(current=>({...current,[key]:value}))} editable={!manual} keyboardType="numbers-and-punctuation" style={s.input}/></View>)}</View><View style={s.row}><Action title="Apply training settings" disabled={manual} onPress={applySettings}/><Action title="Reset training plant" disabled={manual} onPress={()=>{const next=createCircuit();commit(next);setRunning(false);setSettings(Object.fromEntries(settingFields.map(([key])=>[key,String(next.cfg[key])])) as typeof settings);setError('');}}/></View><Text style={s.small}>Simulation resets to training defaults when the app is reopened. Watch records persist separately on this device.</Text></View>
     <View style={s.panel}><Text style={s.section}>SIMULATOR MASS LEDGER</Text><Text style={s.text}>Initial {plant.ledger.initialMassKg.toFixed(3)} kg + bunkered {plant.ledger.bunkeredKg.toFixed(3)} kg − consumed {plant.ledger.consumedKg.toFixed(3)} kg − vented {plant.ledger.ventedKg.toFixed(3)} kg = inventory {m.totalMassKg.toFixed(3)} kg.</Text><Text style={s.text}>Residual: {m.massResidualKg.toExponential(3)} kg. ESD is a training command that latches equipment stopped; reset does not restart equipment.</Text></View>
     <View style={s.panel}><Text style={s.section}>TRAINING EVENT LOG</Text>{plant.events.map((event,index)=><Text key={index} style={s.text}>{event}</Text>)}</View>
+    <View style={s.panel}><Text style={s.section}>DIAGNOSTICS · OFFLINE DEBUG LOG</Text><DiagnosticsPanel snapshot={diagnostics?.snapshot??null} records={diagnostics?.records??[]} busy={diagBusy} status={diagStatus} error={diagError} onRefresh={()=>void refreshDiagnostics()} onCopy={()=>void copyDiagnostics()} onExport={()=>void exportDiagnostics()} onClear={()=>void clearDiagnostics()}/></View>
    </View>}
   </ScrollView>}
   {!!error&&<Text accessibilityRole="alert" style={[s.error,{padding:10}]}>{error}</Text>}
